@@ -4,10 +4,17 @@ source 'https://rubygems.org'
 gem 'rails', '4.0.4'
 gem 'bootstrap-sass'
 gem 'bcrypt-ruby'
+gem 'binding_of_caller'
 
 group :development, :test do
 	gem 'sqlite3'
 	gem 'rspec-rails'
+end
+
+group :test do
+	gem 'selenium-webdriver', '2.35.1'
+	gem 'capybara', '2.1.0'
+	gem 'factory_girl_rails', '4.2.1'
 end
 
 gem 'sass-rails', '~> 4.0.2'
