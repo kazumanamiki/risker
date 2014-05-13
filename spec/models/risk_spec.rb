@@ -89,6 +89,44 @@ describe Risk do
 	describe "コストコメントを作成できる" do
 		let(:cost_comment) { risk.cost_comments.build }
 		it { expect(risk.id).to eq cost_comment.risk_id }
+
+		describe "コストコメント取得のテスト" do
+			describe "MATTERコメントを取得できる" do
+
+				let (:test_cost_comment) { FactoryGirl.create(:cost_comment) }
+
+				before do
+					test_cost_comment.risk_id = risk.id
+					test_cost_comment.cost_type = CostCommentModelHelper::CostCommentType::MATTER
+				end
+
+				it { expect { test_cost_comment.save }.to change(risk.matter_comments, :count).by(1) }
+			end
+
+			describe "MEASUREコメントを取得できる" do
+
+				let (:test_cost_comment) { FactoryGirl.create(:cost_comment) }
+
+				before do
+					test_cost_comment.risk_id = risk.id
+					test_cost_comment.cost_type = CostCommentModelHelper::CostCommentType::MEASURE
+				end
+
+				it { expect { test_cost_comment.save }.to change(risk.measure_comments, :count).by(1) }
+			end
+
+			describe "全てのコストコメントを取得できる" do
+
+				let (:test_cost_comment) { FactoryGirl.create(:cost_comment) }
+
+				before do
+					test_cost_comment.risk_id = risk.id
+					test_cost_comment.cost_type = 3
+				end
+
+				it { expect { test_cost_comment.save }.to change(risk.cost_comments, :count).by(1) }
+			end
+		end
 	end
 
 	describe "コメントを作成できる" do

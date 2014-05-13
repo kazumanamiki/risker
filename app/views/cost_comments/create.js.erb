@@ -1,0 +1,24 @@
+<% if @saved_flag %>
+	// ----- 成功時の処理 -----
+	// 表に項目を追加
+	$('#cost-comment-table tbody tr:last').before(
+		"<tr>" +
+			"<td><%= @cost_comment.comment %></td>" +
+			"<td><%= @cost_comment.cost_memo %></td>" +
+		"</tr>"
+		);
+
+	// モーダルを閉じる
+	$('#myModal').modal('hide');
+<% else %>
+	// ----- 失敗時の処理 -----
+	// エラー原因を表示
+	$('#cost_comment-error-message-area').html("<%= escape_javascript(render 'shared/error_messages', object: @cost_comment) %>");
+	// エラー対象のコントロールの色を変更
+	<% if @cost_comment.errors.include?(:comment) %>
+		$('#form-group-cost_comment_comment').addClass("has-error");
+	<% end %>
+	<% if @cost_comment.errors.include?(:cost_memo) %>
+		$('#form-group-cost_comment_cost_memo').addClass("has-error");
+	<% end %>
+<% end %>

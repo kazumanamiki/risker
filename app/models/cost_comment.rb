@@ -6,7 +6,7 @@ class CostComment < ActiveRecord::Base
 
 	CommentModelHelper.helper_build_comment CommentModelHelper::CommentType::COST_COMMENT
 
-	validates_presence_of :type, {
+	validates_presence_of :cost_type, {
 		message: "種別を空にはできません"
 	}
 

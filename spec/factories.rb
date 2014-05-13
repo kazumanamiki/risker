@@ -20,10 +20,18 @@ FactoryGirl.define do
 	end
 
 	factory :cost_comment do
-		type 0
+		cost_type 0
 		comment "コメント"
 		cost_memo "コストに関するメモ"
 		sequence(:risk_id) { |n| n }
+
+		factory :matter_comment do
+			cost_type CostCommentModelHelper::CostCommentType::MATTER
+		end
+
+		factory :measure_comment do
+			cost_type CostCommentModelHelper::CostCommentType::MEASURE
+		end
 	end
 
 	factory :comment do

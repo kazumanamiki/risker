@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(version: 20140410093240) do
   add_index "comments", ["id_type", "target_id"], name: "index_comments_on_id_type_and_target_id"
 
   create_table "cost_comments", force: true do |t|
-    t.integer  "type"
+    t.integer  "cost_type"
     t.text     "comment"
     t.text     "cost_memo"
     t.integer  "risk_id"
@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(version: 20140410093240) do
     t.datetime "updated_at"
   end
 
-  add_index "cost_comments", ["type", "risk_id"], name: "index_cost_comments_on_type_and_risk_id"
+  add_index "cost_comments", ["cost_type", "risk_id"], name: "index_cost_comments_on_cost_type_and_risk_id"
 
   create_table "projects", force: true do |t|
     t.string   "name"

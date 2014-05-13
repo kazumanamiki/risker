@@ -6,7 +6,7 @@ describe CostComment do
 	subject { cost_comment }
 
 	# メンバチェック
-	it { should respond_to(:type) }
+	it { should respond_to(:cost_type) }
 	it { should respond_to(:comment) }
 	it { should respond_to(:cost_memo) }
 	it { should respond_to(:risk_id) }

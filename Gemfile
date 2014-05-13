@@ -2,7 +2,6 @@ source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.4'
-gem 'bootstrap-sass'
 gem 'bcrypt-ruby'
 gem 'binding_of_caller'
 
@@ -17,7 +16,18 @@ group :test do
 	gem 'factory_girl_rails', '4.2.1'
 end
 
-gem 'sass-rails', '~> 4.0.2'
+gem 'sass-rails', '>= 3.2'
+gem 'bootstrap-sass', '~> 3.1.1'
+
+gem 'therubyracer'
+# twitter bootstrap css & javascript toolkit
+gem 'twitter-bootswatch-rails', '~> 3.1.1'
+# twitter bootstrap helpers gem, e.g., alerts etc...
+gem 'twitter-bootswatch-rails-helpers'
+# use bootstrap-datetimepicker plugin
+gem 'momentjs-rails', '~> 2.5.0'
+gem 'bootstrap3-datetimepicker-rails', '~> 3.0.0'
+
 gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.0.0'
 gem 'jquery-rails'

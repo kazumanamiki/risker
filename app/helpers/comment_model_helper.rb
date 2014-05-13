@@ -9,9 +9,6 @@ module CommentModelHelper
 	module_function
 	def self.helper_build_comment(id_type)
 		binding.of_caller(1).eval("self").class_eval do
-#			define_method :build_comment, ->(user) {
-#				Comment.new(user_id: user.id, id_type: id_type, target_id: self.id )
-#			}
 			define_method :build_marked_comment do |user|
 				Comment.new(user_id: user.id, id_type: id_type, target_id: self.id )
 			end

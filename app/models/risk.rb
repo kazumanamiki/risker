@@ -1,5 +1,10 @@
 class Risk < ActiveRecord::Base
-	has_many :cost_comments,  dependent: :destroy
+	has_many :cost_comments, dependent: :destroy
+	has_many :matter_comments, -> { where cost_type: CostCommentModelHelper::CostCommentType::MATTER },
+			class_name: "CostComment"
+	has_many :measure_comments, -> { where cost_type: CostCommentModelHelper::CostCommentType::MEASURE },
+			class_name: "CostComment"
+
 	belongs_to :project
 
 	has_many :marked_comments, -> { where id_type: CommentModelHelper::CommentType::RISK },
