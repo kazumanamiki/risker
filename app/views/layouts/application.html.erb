@@ -9,15 +9,17 @@
 <body>
 
 <%= render 'layouts/header' %>
-<div class="container-fluid">
-	<div class="row-fluid">
-		<div class="col-md-9">
-			<% flash.each do |key, value| %>
-				<%= content_tag(:div, value, class:"alert alert-#{key}") %>
-			<% end %>
-			<%= yield %>
+<div class="row">
+	<div class="col-sm-12">
+		<div class="col-sm-9">
+			<div class="col-sm-12">
+				<% flash.each do |key, value| %>
+					<%= content_tag(:div, value, class:"alert alert-#{key}") %>
+				<% end %>
+				<%= yield %>
+			</div>
 		</div>
-		<div class="col-md-3">
+		<div class="col-sm-3">
 			<%= render 'layouts/sidebar' %>
 		</div>
 	</div>

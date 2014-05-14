@@ -1,0 +1,37 @@
+<ul class="list-group">
+
+	<li class="list-group-item">
+		<h3>トピックリスク</h4>
+		<p>
+			<small>
+				<!-- TODO ここの文章をリスク件数によってかえる -->
+				以下のリスクをチェックしてください。
+			<small>
+		</p>
+	</li>
+
+<%
+	@user.projects.find_each do |project|
+		project.risks.find_each do |risk|
+%>
+	<li class="list-group-item">
+		<h4>
+			<span class="badge">
+				<%= RiskModelHelper.type_to_s risk.status %>
+			</span>
+			<%= link_to risk.title, risk_path(risk) %>
+			<small>
+				<%= link_to risk.project.name, project_path(project), class: "text-info" %>
+			</small>
+		</h4>
+		<div class="alert alert-info">
+			<ul class="list-unstyled">
+				<li>トピックの理由</li>
+			</ul>
+		</div>
+	</li>
+<%
+		end
+	end
+%>
+</ul>

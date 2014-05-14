@@ -1,25 +1,56 @@
 <div>
 	<ol class="breadcrumb">
-		<li><a href="#">user</a></li>
+		<li><%= link_to @risk.project.user.nickname, user_path(@risk.project.user) %></li>
 		<li><%= link_to @risk.project.name, project_path(@risk.project) %></a></li>
 		<li class="active"><%= @risk.title %></li>
 	</ol>
 </div>
 
-<div>
-	<h2>
-		<%= @risk.title %>
-		<small><span class="label label-default">
-				<%= RiskModelHelper.type_to_s @risk.status %>
-		</span></small>
-	</h2>
-	<blockquote>
-		<p><%= @risk.details %></p>
-	</blockquote>
-</div>
+<div class="panel panel-primary">
+	<div class="panel-heading">
+		<h2 class="bg-primary">
+			<%= @risk.title %>
+		</h2>
+	</div>
 
-<div>
-	<ul class="nav nav-tabs">
+	<div class="panel-body">
+		<ul class="list-group">
+			<li class="list-group-item">
+				<ul class="list-inline">
+					<li>
+						<span class="label label-danger">
+							<%= RiskModelHelper.type_to_s @risk.status %>
+						</span>
+					</li>
+					<li>
+						<span class="label label-default">
+							監視間隔：<%= @risk.check_cycle %>
+						</span>
+					</li>
+					<li>
+						<span class="label label-default">
+							監視終了日：<%= @risk.watch_over_date %>
+						</span>
+					</li>
+				</ul>
+			</li>
+
+			<li class="list-group-item">
+				<div><p><%= @risk.details %></p></div>
+				<div class="text-right">
+					<small>
+						<a href="#">
+							<span class="glyphicon glyphicon-pencil"></span>
+							編集
+						</a>
+					</small>
+				</div>
+			</li>
+		</ul>
+	</div>
+
+	<div class="panel-body">
+		<ul class="nav nav-tabs">
 <%
 	# タブの生成を行う
 	[
@@ -33,49 +64,57 @@
 		}
 	].each do |tab_data|
 %>
-		<li class="<%= (@tab_type == tab_data[:type]) ? "active" : "" %>">
-			<%= link_to tab_data[:tab_text], risk_path(@risk, { tab_type: tab_data[:type] }) %>
-		</li>
-<% end %>
-	</ul>
-	<div class="table-responsive">
-		<table id="cost-comment-table" class="table table-striped table-bordered">
-			<head>
-				<tr>
-					<th><%= @cost_comment_definition::TABLE_TEXT[0] %></th>
-					<th class="col-sm-3"><%= @cost_comment_definition::TABLE_TEXT[1] %></th>
-				</tr>
-			</head>
+			<li class="<%= "active" if @tab_type == tab_data[:type] %>">
+				<%= link_to tab_data[:tab_text], risk_path(@risk, { tab_type: tab_data[:type] }) %>
+			</li>
+<% 	end %>
+		</ul>
+		<div class="table-responsive">
+			<table id="cost-comment-table" class="table table-bordered table-condensed">
+				<thead>
+					<tr>
+						<th>
+							<span class="glyphicon glyphicon-warning-sign"></span>
+							<%= @cost_comment_definition::TABLE_TEXT[0] %>
+						</th>
+						<th class="col-sm-3">
+							<span class="glyphicon glyphicon-euro"></span>
+							<%= @cost_comment_definition::TABLE_TEXT[1] %>
+						</th>
+					</tr>
+				</thead>
 <%
 	table_datas = @risk.matter_comments if (@tab_type == CostCommentModelHelper::CostCommentType::MATTER)
 	table_datas = @risk.measure_comments if (@tab_type == CostCommentModelHelper::CostCommentType::MEASURE)
 	table_datas.find_each do |table_data|
 %>
-			<tr>
-				<td><%= table_data.comment %></td>
-				<td><%= table_data.cost_memo %></td>
-			</tr>
+				<tr>
+					<td><%= table_data.comment %></td>
+					<td><%= table_data.cost_memo %></td>
+				</tr>
 <% end %>
-			<tr>
-				<td colspan="2"><a data-toggle="modal" data-target="#myModal">追加</a></td>
-			</tr>
-		</table>
+				<tr>
+					<td colspan="2" class="text-right">
+						<a href="#" data-toggle="modal" data-target="#myModal">
+							<span class="glyphicon glyphicon-plus"></span>
+							追加
+						</a>
+					</td>
+				</tr>
+			</table>
+		</div>
 	</div>
-</div>
 
-<div>
-	<small>
-		<dl class="dl-horizontal pull-right">
-			<dt>監視間隔</dt>
-			<dd><%= @risk.check_cycle %></dd>
-			<dt>監視終了日</dt>
-			<dd><%= @risk.watch_over_date %></dd>
-			<dt>作成日</dt>
-			<dd><%= @risk.created_at %></dd>
-			<dt>更新日</dt>
-			<dd><%= @risk.updated_at %></dd>
-		</dl>
-	</small>
+	<div class="panel-footer clearfix">
+		<small>
+			<dl class="dl-horizontal pull-right">
+				<dt>作成日</dt>
+				<dd><%= @risk.created_at %></dd>
+				<dt>更新日</dt>
+				<dd><%= @risk.updated_at %></dd>
+			</dl>
+		</small>
+	</div>
 </div>
 
 <%= render 'risks/cost_comment' %>

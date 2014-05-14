@@ -1,9 +1,36 @@
-<%= form_for(@user) do |f| %>
-	<%= f.label :nickname %>
-	<%= f.text_field :nickname %>
-	<%= f.label :password %>
-	<%= f.text_field :password %>
-	<%= f.label :password_confirmation %>
-	<%= f.text_field :password_confirmation %>
-	<%= f.submit %>
-<% end %>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h2>新規登録</h2>
+	</div>
+	<div class="panel-body">
+
+		<%= form_for(@user) do |f| %>
+			<%= render 'shared/error_messages', object: f.object %>
+
+			<fieldset>
+				<div class="form-group">
+					<%= f.label :nickname, "ニックネーム", class: "control-label" %>
+					<%= f.text_field :nickname, class: "form-control", placeholder: "ニックネーム" %>
+				</div>
+
+				<div class="form-group">
+					<%= f.label :password, "パスワード", class: "control-label" %>
+					<%= f.password_field :password, class: "form-control", placeholder: "パスワード" %>
+				</div>
+
+				<div class="form-group">
+					<%= f.label :password_confirmation, "パスワード(確認)", class: "control-label" %>
+					<%= f.password_field :password_confirmation, class: "form-control", placeholder: "パスワード(確認)" %>
+				</div>
+
+				<p>
+					<small>
+						※ユーザー登録を行うと、<a href="#">利用規約</a>に同意したことになります。
+					</small>
+				</p>
+				<%= f.submit "ユーザー登録", class: "btn btn-primary" %>
+			</fieldset>
+		<% end %>
+	</div>
+</div>
+

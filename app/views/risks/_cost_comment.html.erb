@@ -35,7 +35,7 @@
           <%= hidden_field_tag "cost_comment[risk_id]", @risk.id %>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">キャンセル</button>
+          <button id="modal_cancel" type="button" class="btn btn-default" data-dismiss="modal">キャンセル</button>
           <%= submit_tag @cost_comment_definition::ADD_BUTTON, class: "btn btn-primary" %>
         </div>
       <% end %>

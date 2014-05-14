@@ -18,10 +18,15 @@
 //= require bootstrap-datetimepicker
 
 var ready = function() {
+	// datetimepikerのスクリプト
 	$('#datetimepicker_new').datetimepicker({
 		pickTime: false
 	});
+	// モーダルキャンセル時のスクリプト
+	$("#modal_cancel").click(function(){
+		$("#cost_comment_cost_memo").val("");
+		$("#cost_comment_comment").val("");
+	});
 };
-
 $(document).ready(ready)
 $(document).on('page:load', ready)

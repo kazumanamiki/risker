@@ -1,0 +1,33 @@
+<ul class="list-group">
+	<li class="list-group-item">
+		<a href="<%= new_project_path %>" class="btn btn-primary">
+			<span class="glyphicon glyphicon-pencil"></span>
+			新規プロジェクトの作成
+		</a>
+	</li>
+
+<% @user.projects.find_each do |project| %>
+	<li href="<%= project_path(project) %>" class="list-group-item">
+		<h4 class="list-group-item-heading">
+			<%= link_to project.name, project_path(project) %>
+			<span class="badge">リスク数：<%= project.risks.count %></span>
+		</h4>
+	<% if project.risks.count > 0 %>
+		<dl class="dl-horizontal list-inline">
+			<dt>トピックリスク</dt>
+			<% project.risks.find_each do |risk| %>
+				<dd>
+					<%= link_to risk.title, risk_path(risk), class: "text-info" %>
+					<div class="col-sm-offset-1"><small>
+							<span class="glyphicon glyphicon-stats"></span>
+							<%= RiskModelHelper.type_to_s risk.status %>
+							<span class="glyphicon glyphicon-arrow-up"></span>
+							<%= risk.updated_at %>
+					</small></div>
+				</dd>
+			<% end %>
+		</dl>
+	<% end %>
+	</li>
+<% end %>
+</ul>
