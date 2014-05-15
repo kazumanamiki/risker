@@ -9,25 +9,22 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  *= require_self
- *= require journal/loader
- *= require journal/bootswatch
  *= require bootstrap-datetimepicker
  *
  */
 
 /*
- * railsで不正な入力の際にとbootstrapの不正枠を表示するLESS
+ * railsで不正な入力の際にとbootstrapの不正枠を表示する
  */
-@import "journal/base";
 .field_with_errors {
   .help-block,
   .control-label,
   .form-control-feedback {
-    color: @brand-primary;
+    color: #d9534f;
   }
 
   .form-control,
   .form-control:focus {
-    border-color: @brand-primary;
+    border-color: #d9534f;
   }
 }

@@ -20,13 +20,12 @@ group :test do
 end
 
 gem 'sass-rails', '>= 3.2'
-gem 'bootstrap-sass', '~> 3.1.1'
-
 gem 'therubyracer'
+#gem 'bootstrap-sass', '~> 3.1.1'
 # twitter bootstrap css & javascript toolkit
-gem 'twitter-bootswatch-rails', '~> 3.1.1'
+#gem 'twitter-bootswatch-rails', '~> 3.1.1'
 # twitter bootstrap helpers gem, e.g., alerts etc...
-gem 'twitter-bootswatch-rails-helpers'
+#gem 'twitter-bootswatch-rails-helpers'
 # use bootstrap-datetimepicker plugin
 gem 'momentjs-rails', '~> 2.5.0'
 gem 'bootstrap3-datetimepicker-rails', '~> 3.0.0'
