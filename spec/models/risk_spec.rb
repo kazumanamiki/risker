@@ -12,11 +12,15 @@ describe Risk do
 	it { should respond_to(:check_cycle) }
 	it { should respond_to(:watch_over_date) }
 	it { should respond_to(:project_id) }
+	it { should respond_to(:next_check_date) }
 
 	it { should respond_to(:cost_comments) }
-	it { should respond_to(:build_marked_comment).with(1).argument }
-	it { should respond_to(:marked_comments) }
+	it { should respond_to(:matter_comments) }
+	it { should respond_to(:measure_comments) }
 	it { should respond_to(:project) }
+	it { should respond_to(:marked_comments) }
+
+	it { should respond_to(:build_marked_comment).with(1).argument }
 
 	it { should be_valid }
 
@@ -83,6 +87,136 @@ describe Risk do
 			before { risk.watch_over_date = nil}
 
 			it { should_not be_valid }
+		end
+	end
+
+	describe "次のチェック日時は" do
+		describe "新規作成する際に" do
+			let(:risk_check_date) { FactoryGirl.create(:risk) }
+
+			before do
+				risk_check_date.check_cycle = 24 * 7 * 4
+				risk_check_date.save
+			end
+
+			it "チェックサイクル後の時間となる" do
+				check_date = risk_check_date.updated_at.since(risk_check_date.check_cycle * 60 * 60)
+				expect(risk_check_date.next_check_date.year).to eq check_date.year
+				expect(risk_check_date.next_check_date.month).to eq check_date.month
+				expect(risk_check_date.next_check_date.day).to eq check_date.day
+				expect(risk_check_date.next_check_date.hour).to eq check_date.hour
+			end
+
+			describe "更新する際に" do
+				before do
+					risk_check_date.check_cycle = 5
+					risk_check_date.save
+				end
+
+				it "チェックサイクル後の時間となる" do
+					check_date = risk_check_date.updated_at.since(risk_check_date.check_cycle * 60 * 60)
+					expect(risk_check_date.next_check_date.year).to eq check_date.year
+					expect(risk_check_date.next_check_date.month).to eq check_date.month
+					expect(risk_check_date.next_check_date.day).to eq check_date.day
+					expect(risk_check_date.next_check_date.hour).to eq check_date.hour
+				end
+			end
+		end
+	end
+
+	describe "対象プロジェクトの日付を超えたリスクが検索できる" do
+		let(:project) { FactoryGirl.create(:project) }
+		let(:risk_check_date_not_over) { FactoryGirl.create(:risk) }
+		let(:risk_check_date_over) { FactoryGirl.create(:risk) }
+		let(:risk_cehck_watch_over) { FactoryGirl.create(:risk) }
+		let(:risk_cehck_not_check) { FactoryGirl.create(:risk) }
+		let(:risk_check_extinction) { FactoryGirl.create(:risk) }
+
+		before do
+			# 監視対象リスク
+			risk_check_date_not_over.project_id = project.id
+			risk_check_date_not_over.check_cycle = 1
+			risk_check_date_not_over.watch_over_date = DateTime.now.next_month
+			risk_check_date_not_over.save
+
+			# 監視対象リスク
+			risk_check_date_over.project_id = project.id
+			risk_check_date_over.check_cycle = 10
+			risk_check_date_over.watch_over_date = DateTime.now.next_month
+			risk_check_date_over.save
+
+			# 監視期間を過ぎたリスク
+			risk_cehck_watch_over.project_id = project.id
+			risk_cehck_watch_over.check_cycle = 1
+			risk_cehck_watch_over.watch_over_date = DateTime.now.yesterday
+			risk_cehck_watch_over.save
+
+			# 監視対象外のリスク
+			risk_cehck_not_check.project_id = project.id
+			risk_cehck_not_check.check_cycle = 0
+			risk_cehck_not_check.watch_over_date = DateTime.now.next_month
+			risk_cehck_not_check.save
+
+			# 既にクローズされたリスク
+			risk_check_extinction.project_id = project.id
+			risk_check_extinction.check_cycle = 1
+			risk_check_extinction.watch_over_date = DateTime.now.next_month
+			risk_check_extinction.status = RiskModelHelper::StatusType::EXTINCTION
+			risk_check_extinction.save
+		end
+
+		it "0件ヒットのチェック" do
+			check_date = DateTime.now.since(60 * 60 * 0)
+			risks = Risk.from_projects_primary_check_by(project, datetime: check_date)
+			expect(risks.count).to eq 0
+		end
+
+		it "1件ヒットのチェック" do
+			check_date = DateTime.now.since(60 * 60 * 2)
+			risks = Risk.from_projects_primary_check_by(project, datetime: check_date)
+			expect(risks.count).to eq 1
+		end
+
+		it "2件ヒットのチェック" do
+			check_date = DateTime.now.since(60 * 60 * 11)
+			risks = Risk.from_projects_primary_check_by(project, datetime: check_date)
+			expect(risks.count).to eq 2
+		end
+
+		describe "ユーザーの日付を超えたリスクが検索できる" do
+			let(:user) { FactoryGirl.create(:user) }
+
+			before do
+				project.user_id = user.id
+				project.save
+			end
+
+			it "1件ヒットのチェック" do
+				check_date = DateTime.now.since(60 * 60 * 2)
+				risks = Risk.from_users_primary_check_by(user, datetime: check_date)
+				expect(risks.count).to eq 1
+			end
+
+			describe "複数のプロジェクトも検索できる" do
+				let(:project2) { FactoryGirl.create(:project) }
+				let(:risk_project2) { FactoryGirl.create(:risk) }
+
+				before do
+					project2.user_id = user.id
+					project2.save
+
+					risk_project2.project_id = project2.id
+					risk_project2.check_cycle = 1
+					risk_project2.watch_over_date = DateTime.now.next_month
+					risk_project2.save
+				end
+
+				it "2件ヒットのチェック" do
+					check_date = DateTime.now.since(60 * 60 * 2)
+					risks = Risk.from_users_primary_check_by(user, datetime: check_date)
+					expect(risks.count).to eq 2
+				end
+			end
 		end
 	end
 

@@ -1,57 +1,39 @@
-<div>
-	<ol class="breadcrumb">
-		<li><a href="#">user</a></li>
-		<li><%= link_to @project.name, project_path(@project) %></a></li>
-		<li class="active">リスクの作成</li>
-	</ol>
-</div>
+<%= render 'shared/breadcrumb', target_crumb: @risk %>
 
-<div class="panel panel-default">
+<div class="panel panel-primary">
 	<div class="panel-heading">
-		<h2>リスクの作成</h2>
+		<h2 class="bg-primary">リスクの作成</h2>
 	</div>
 	<div class="panel-body">
-		<%= form_for(@risk, html: { class: "form-horizontal" }) do |f| %>
+		<%= form_for(@risk) do |f| %>
 			<%= render 'shared/error_messages', object: f.object %>
 			<fieldset>
 				<div class="form-group">
-					<%= f.label :title, "タイトル", class: "col-sm-2 control-label" %>
-					<div class="col-sm-9">
-						<%= f.text_field :title, class: "form-control", placeholder: "タイトル" %>
-					</div>
+					<%= f.label :title, "タイトル", class: "control-label" %>
+					<%= f.text_field :title, class: "form-control", placeholder: "タイトル" %>
 				</div>
 				<div class="form-group">
-					<%= f.label :details, "詳細", class: "col-sm-2 control-label" %>
-					<div class="col-sm-9">
-						<%= f.text_area :details, class: "form-control", placeholder: "詳細" %>
-					</div>
+					<%= f.label :details, "詳細", class: "control-label" %>
+					<%= f.text_area :details, class: "form-control", placeholder: "詳細" %>
 				</div>
 				<div class="form-group">
-					<%= f.label :status, "ステータス", class: "col-sm-2 control-label" %>
-					<div class="col-sm-9">
-						<%= f.select(:status, RiskModelHelper::RISK_TYPE_SELECT, { } , { :class => "form-control" }) %>
-					</div>
+					<%= f.label :status, "ステータス", class: "control-label" %>
+					<%= f.select(:status, RiskModelHelper::RISK_CREATE_TYPE_SELECT, { } , { :class => "form-control" }) %>
 				</div>
 				<div class="form-group">
-					<%= f.label :check_cycle, "監視間隔", class: "col-sm-2 control-label" %>
-					<div class="col-sm-9">
-						<%= f.number_field :check_cycle, class: "form-control", placeholder: "(0〜#{24 * 7 * 4}時間)" %>
-					</div>
+					<%= f.label :check_cycle, "監視間隔", class: "control-label" %>
+					<%= f.number_field :check_cycle, class: "form-control", placeholder: "(0〜#{24 * 7 * 4}時間)" %>
 				</div>
 				<div class="form-group">
-					<%= f.label :watch_over_date, "監視終了日", class: "col-sm-2 control-label" %>
-					<div class="col-sm-9">
-						<div class='input-group date' id='datetimepicker_new' data-date-format="YYYY/MM/DD">
-							<%= f.text_field :watch_over_date, class: "form-control" %>
-							<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-						</div>
+					<%= f.label :watch_over_date, "監視終了日", class: "control-label" %>
+					<div class='input-group date' id='datetimepicker_new' data-date-format="YYYY-MM-DD">
+						<%= f.text_field :watch_over_date, class: "form-control" %>
+						<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 					</div>
 				</div>
 				<%= f.hidden_field :project_id %>
 				<div class="form-group">
-					<div class="col-sm-offset-2 col-sm-10">
-						<%= f.submit "リスクを作成", class: "btn btn-primary" %>
-					</div>
+					<%= f.submit "リスクを作成", class: "btn btn-primary pull-right" %>
 				</div>
 			</fieldset>
 		<% end %>

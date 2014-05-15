@@ -14,14 +14,16 @@
 		<div class="col-sm-9">
 			<div class="col-sm-12">
 				<% flash.each do |key, value| %>
-					<%= content_tag(:div, value, class:"alert alert-#{key}") %>
+					<div class="alert alert-<%= key %>"><%= value %></div>
 				<% end %>
 				<%= yield %>
 			</div>
 		</div>
+	<% if signed_in? %>
 		<div class="col-sm-3">
 			<%= render 'layouts/sidebar' %>
 		</div>
+	<% end %>
 	</div>
 </div>
 <% if Rails.env.development? %>

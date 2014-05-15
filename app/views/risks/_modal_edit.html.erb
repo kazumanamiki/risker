@@ -1,0 +1,63 @@
+<%
+# 必要パラメータ
+# :risk リスクモデルのインスタンス
+%>
+<div class="modal fade" id="modal_edit" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">リスクの編集</h4>
+      </div>
+      <div id="edit-error-message-area">
+        <!-- エラーメッセージ用 -->
+      </div>
+      <%= form_for(risk, html: { class: "form-horizontal", remote: true }) do |f| %>
+        <div class="modal-body">
+          <div id="form-group-risk_title" class="form-group">
+            <%= f.label :title, "タイトル", class: "col-sm-3 control-label" %>
+            <div class="col-sm-9">
+              <%= f.text_field :title, class: "form-control" %>
+            </div>
+          </div>
+
+          <div id="form-group-risk_details" class="form-group">
+            <%= f.label :details, "詳細", class: "col-sm-3 control-label" %>
+            <div class="col-sm-9">
+              <%= f.text_area :details, class: "form-control" %>
+            </div>
+          </div>
+
+          <div id="form-group-risk_status" class="form-group">
+          <%= f.label :status, "ステータス", class: "col-sm-3 control-label" %>
+            <div class="col-sm-9">
+              <%= f.select(:status, RiskModelHelper::RISK_UPDATE_TYPE_SELECT, { } , { :class => "form-control" }) %>
+            </div>
+          </div>
+
+          <div id="form-group-risk_check_cycle" class="form-group">
+            <%= f.label :check_cycle, "監視間隔", class: "col-sm-3 control-label" %>
+            <div class="col-sm-9">
+              <%= f.number_field :check_cycle, class: "form-control" %>
+            </div>
+          </div>
+
+          <div id="form-group-risk_watch_over_date" class="form-group">
+            <%= f.label :watch_over_date, "監視終了日", class: "col-sm-3 control-label" %>
+            <div class="col-sm-9">
+              <div class='input-group date' id='datetimepicker_new' data-date-format="YYYY-MM-DD">
+                <%= f.text_field :watch_over_date, class: "form-control" %>
+                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default modal-cancel" data-dismiss="modal">キャンセル</button>
+          <%= submit_tag "編集", class: "btn btn-primary" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

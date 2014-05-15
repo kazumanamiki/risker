@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140410093240) do
+ActiveRecord::Schema.define(version: 20140515051123) do
 
   create_table "comments", force: true do |t|
     t.integer  "user_id"
@@ -51,15 +51,20 @@ ActiveRecord::Schema.define(version: 20140410093240) do
     t.integer  "project_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "next_check_date"
   end
+
+  add_index "risks", ["project_id", "next_check_date"], name: "index_risks_on_project_id_and_next_check_date"
 
   create_table "users", force: true do |t|
     t.string   "nickname"
     t.string   "password_digest"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "remember_token"
   end
 
   add_index "users", ["nickname"], name: "index_users_on_nickname", unique: true
+  add_index "users", ["remember_token"], name: "index_users_on_remember_token"
 
 end

@@ -1,0 +1,15 @@
+<% if @saved_flag %>
+	// ----- 成功時の処理 -----
+	// リダイレクト
+	$(location).attr("href", "<%= risk_path(@risk) %>")
+<% else %>
+	// ----- 失敗時の処理 -----
+	// エラー原因を表示
+	$('#edit-error-message-area').html("<%= escape_javascript(render 'shared/error_messages', object: @risk) %>");
+	// エラー対象のコントロールの色を変更
+	<% [:title, :details, :status, :check_cycle, :watch_over_date].each do |column| %>
+		<% if @risk.errors.include?(column) %>
+			$("#form-group-risk_<%= column.to_s %>").addClass("has-error");
+		<% end %>
+	<% end %>
+<% end %>

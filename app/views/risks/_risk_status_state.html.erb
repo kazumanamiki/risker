@@ -1,0 +1,13 @@
+<%
+# 必要パラメータ
+# :risk リスクモデルのインスタンス
+%>
+<%
+label_state = "info"
+label_state = "warning" if (risk.status == RiskModelHelper::StatusType::LATENT)
+label_state = "danger" if (risk.status == RiskModelHelper::StatusType::APPARENT)
+label_state = "default" if (risk.status == RiskModelHelper::StatusType::EXTINCTION)
+%>
+<span class="label label-<%= label_state %>">
+	<%= RiskModelHelper.type_to_s risk.status %>
+</span>

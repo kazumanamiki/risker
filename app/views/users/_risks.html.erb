@@ -1,37 +1,42 @@
+<%
+# 必要パラメータ
+# :user Userモデルのインスタンス
+%>
 <ul class="list-group">
-
+<%
+risks = Risk.from_users_primary_check_by(user)
+if risks.count > 0
+%>
 	<li class="list-group-item">
-		<h3>トピックリスク</h4>
+		<h3>トピックリスク</h3>
 		<p>
 			<small>
-				<!-- TODO ここの文章をリスク件数によってかえる -->
 				以下のリスクをチェックしてください。
-			<small>
+			</small>
 		</p>
 	</li>
+<% else %>
+	<li class="list-group-item">
+		<p>チェックするリスクはありません。</p>
+	</li>
+<% end %>
 
-<%
-	@user.projects.find_each do |project|
-		project.risks.find_each do |risk|
-%>
+<% risks.each do |risk| %>
 	<li class="list-group-item">
 		<h4>
 			<span class="badge">
 				<%= RiskModelHelper.type_to_s risk.status %>
 			</span>
-			<%= link_to risk.title, risk_path(risk) %>
+				<%= link_to risk.title, risk_path(risk) %>
 			<small>
-				<%= link_to risk.project.name, project_path(project), class: "text-info" %>
+				<%= link_to risk.project.name, project_path(risk.project), class: "text-info" %>
 			</small>
 		</h4>
 		<div class="alert alert-info">
 			<ul class="list-unstyled">
-				<li>トピックの理由</li>
+				<li>監視間隔が過ぎています。内容を確認してください。</li>
 			</ul>
 		</div>
 	</li>
-<%
-		end
-	end
-%>
+<% end %>
 </ul>

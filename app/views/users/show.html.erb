@@ -8,7 +8,7 @@ tab_data_array = [
 
 <div class="panel panel-primary">
 	<div class="panel-heading">
-		<h2 class="bg-primary">マネージャー：<%= @user.nickname %></h2>
+		<h2 class="bg-primary"><%= @user.nickname %></h2>
 	</div>
 
 	<ul class="nav nav-tabs">
@@ -22,7 +22,7 @@ tab_data_array = [
 	<div class="panel-body tab-content">
 	<% tab_data_array.each do |tab_data| %>
 		<div class="tab-pane <%= "active" if @tab_active == tab_data[:id] %>" id="<%= tab_data[:id] %>">
-			<%= render tab_data[:render_page] %>
+			<%= render tab_data[:render_page], user: @user %>
 		</div>
 	<% end %>
 	</div>

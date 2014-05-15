@@ -1,0 +1,22 @@
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h2>ログイン</h2>
+	</div>
+	<div class="panel-body">
+		<%= form_tag(sessions_path) do %>
+			<fieldset>
+				<div class="form-group">
+					<%= label_tag :nickname, "ニックネーム", class: "control-label" %>
+					<%= text_field_tag :nickname, "", class: "form-control", placeholder: "ニックネーム" %>
+				</div>
+
+				<div class="form-group">
+					<%= label_tag :password, "パスワード", class: "control-label" %>
+					<%= password_field_tag :password, "", class: "form-control", placeholder: "パスワード" %>
+				</div>
+
+				<%= submit_tag "ログイン", class: "btn btn-primary pull-right" %>
+			</fieldset>
+		<% end %>
+	</div>
+</div>

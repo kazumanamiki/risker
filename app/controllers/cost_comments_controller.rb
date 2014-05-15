@@ -1,25 +1,30 @@
 class CostCommentsController < ApplicationController
+
+	before_action :signed_in_user
+	before_action :correct_user, only: [:create]
+
 	def create
-		# TODO リスクに対して自分がアクセス権を有しているかチェックする(不正アクセス対策)
-
-		@cost_comment = CostComment.new(cost_comment_params)
 		@saved_flag = @cost_comment.save # js用に変数に格納
-
-		if @saved_flag
-			# 成功処理
-			flash.now[:success] = "コメントを追加しました" # TODO 文言はcost_typeにより変わる
-		else
-			# 失敗処理
-			flash.now[:error] = "コメント追加に失敗しました" # TODO 文言はcost_typeにより変わる
-		end
-
 		respond_to do |format|
-			format.html { redirect_to Risk.find(params[:cost_comment][:risk_id]) }
+			format.html { redirect_to risk_path(Risk.find(params[:cost_comment][:risk_id])) }
 			format.js
 		end
 	end
 
 	private
+		# アクションを行うユーザーが正しいかチェック
+		def correct_user
+			if params[:action] == 'create'
+				@cost_comment = CostComment.new(cost_comment_params)
+			else
+				@cost_comment = CostComment.find(params[:id])
+			end
+			unless current_user?(@cost_comment.risk.project.user)
+				flash.now[:danger] = "操作に対する権限がありません"
+				redirect_to(root_path)
+			end
+		end
+
 		def cost_comment_params
 			params.require(:cost_comment).permit(:cost_type, :comment, :cost_memo, :risk_id)
 		end

@@ -1,4 +1,6 @@
 class Risk < ActiveRecord::Base
+	include RiskModelHelper
+
 	has_many :cost_comments, dependent: :destroy
 	has_many :matter_comments, -> { where cost_type: CostCommentModelHelper::CostCommentType::MATTER },
 			class_name: "CostComment"
@@ -9,6 +11,9 @@ class Risk < ActiveRecord::Base
 
 	has_many :marked_comments, -> { where id_type: CommentModelHelper::CommentType::RISK },
 			foreign_key: "target_id", class_name: "Comment", dependent: :destroy
+
+
+	before_save :create_next_check_date
 
 	CommentModelHelper.helper_build_comment CommentModelHelper::CommentType::RISK
 
@@ -39,4 +44,99 @@ class Risk < ActiveRecord::Base
 	}
 
 	validates_presence_of :project_id
+
+
+	# ----- 検索用SQL
+
+	SQL_AND = " and "
+	SQL_CHECK_WATCH_OVER_DATE = "watch_over_date > :datetime"
+	SQL_CHECK_NEXT_DATE       = "next_check_date < :datetime"
+	SQL_CHECK_NEXT_DATE_NULL  = "next_check_date not null"
+	SQL_CHECK_STATUS          = "status <> :extinction"
+
+
+	# ----- 検索用クラスメソッド
+
+	# プロジェクトのリスクを次回チェック日でソートして取得
+	# @params [Project] project 検索対象のプロジェクト
+	# @return [ActiveRecord] アクティブレコード
+	def self.from_projects_check_date_oder(project, params = {})
+		sql_where = "project_id = :project_id"
+		sql_where << SQL_AND << SQL_CHECK_WATCH_OVER_DATE
+		sql_where << SQL_AND << SQL_CHECK_NEXT_DATE_NULL
+		sql_where << SQL_AND << SQL_CHECK_STATUS
+
+		where_hash = generate_where_hash
+		where_hash.merge!(params)
+		where_hash[:project_id] = project.id
+
+		ar = where(sql_where, where_hash)
+		ar = ar.order("next_check_date")
+		ar
+	end
+
+	# プロジェクトに対してチェック日時が過ぎているリスクを取得する
+	# @params [Project] project 検索対象のプロジェクト
+	# @return [ActiveRecord] アクティブレコード
+	def self.from_projects_primary_check_by(project, params = {})
+		sql_where = "project_id = :project_id"
+		sql_where << SQL_AND << SQL_CHECK_WATCH_OVER_DATE
+		sql_where << SQL_AND << SQL_CHECK_NEXT_DATE
+		sql_where << SQL_AND << SQL_CHECK_STATUS
+
+		where_hash = generate_where_hash
+		where_hash.merge!(params)
+		where_hash[:project_id] = project.id
+
+		where(sql_where, where_hash)
+	end
+
+	# ユーザーに対してチェック日時が過ぎているリスクを取得する
+	# @params [Project] project 検索対象のプロジェクト
+	# @return [ActiveRecord] アクティブレコード
+	def self.from_users_primary_check_by(user, params = {})
+		users_project_ids = "select project_id from projects where user_id = :user_id"
+		sql_where = "project_id IN (#{users_project_ids})"
+		sql_where << SQL_AND << SQL_CHECK_WATCH_OVER_DATE
+		sql_where << SQL_AND << SQL_CHECK_NEXT_DATE
+		sql_where << SQL_AND << SQL_CHECK_STATUS
+
+		where_hash = generate_where_hash
+		where_hash.merge!(params)
+		where_hash[:user_id] = user.id
+
+		where(sql_where, where_hash)
+	end
+
+
+	# ---- インスタンスメソッド
+
+	def next_check_date_text
+		return "なし" if next_check_date.nil?
+		return "監視期限切れ" if watch_over_date < DateTime.now
+		return next_check_date.strftime("%Y-%-m-%-d %-H時")
+	end
+
+
+	# ---- privateメソッド
+
+	private
+		# レコードの保存の際にnext_check_dateを決定する
+		# @note チェック周期が0の場合はnext_check_dataを0にしてチェック対象から外す
+		def create_next_check_date
+			if (self.check_cycle == 0)
+				self.next_check_date = nil
+			else
+				self.next_check_date = DateTime.now.since(60 * 60 * self.check_cycle)
+			end
+		end
+
+		# whereで使用するhashパラメータの初期値生成
+		# @return [Hash] where句で使用するhashパラメータ
+		def self.generate_where_hash
+			ret = {}
+			ret[:datetime] = DateTime.now
+			ret[:extinction] = StatusType::EXTINCTION.to_s
+			ret
+		end
 end

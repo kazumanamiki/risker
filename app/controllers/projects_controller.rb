@@ -1,18 +1,15 @@
 class ProjectsController < ApplicationController
 
-	def index
-	end
+	before_action :signed_in_user
 
 	def new
 		@project = Project.new
+		@project.user_id = current_user.id
 	end
 
 	def create
-		# TODO プロジェクトIDをちゃんとしたものにする
-		# TODO 作成者がプロジェクトの持ち主か確認する
-
 		@project = Project.new(project_params)
-		@project.user_id = 1 # TODO
+		@project.user_id = current_user.id
 		if @project.save
 			#成功処理
 			flash[:success] = sprintf("「%s」を追加しました。", @project.name)

@@ -1,17 +1,17 @@
 <ul class="nav nav-pills nav-stacked">
 	<li class="active">
-		<a href="#">
-			ログイン：UserName
+		<a href="<%= user_path(current_user) %>">
+			<%= current_user.nickname %>
 		</a>
 	</li>
 	<li>
-		<a href="#">
+		<a href="<%= user_path(current_user, tab_active: "projects") %>">
 			<span class="glyphicon glyphicon-pencil"></span>
 			My プロジェクト
 		</a>
 	</li>
 	<li>
-		<a href="#">
+		<a href="<%= user_path(current_user, tab_active: "risks") %>">
 			<span class="glyphicon glyphicon-eye-open"></span>
 			My リスク
 		</a>

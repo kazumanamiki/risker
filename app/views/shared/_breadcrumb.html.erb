@@ -1,0 +1,54 @@
+<%
+# 必要パラメータ
+# :target_crumb User, Project, Risk のモデル
+%>
+<%
+crumb_array = []
+until target_crumb.nil?
+	case target_crumb.class.to_s
+	when Risk.to_s
+		crumb_array.push({ type: :risk, obj: target_crumb, text: target_crumb.title })
+		crumb_array.last[:text] ||= "リスクの作成"
+		target_crumb = target_crumb.project
+	when Project.to_s
+		crumb_array.push({ type: :project, obj: target_crumb, text: target_crumb.name })
+		crumb_array.last[:text] ||= "プロジェクトの作成"
+		target_crumb = target_crumb.user
+	when User.to_s
+		crumb_array.push({ type: :user, obj: target_crumb, text: target_crumb.nickname })
+		target_crumb = nil
+	else
+		target_crumb = nil
+	end
+end
+%>
+<div>
+	<ol class="breadcrumb">
+<%
+until crumb_array.empty?
+	temp_crumb = crumb_array.pop
+	last_flag = crumb_array.empty?
+	if last_flag
+%>
+		<li class="active"><%= temp_crumb[:text] %></li>
+<%
+	else
+%>
+		<li>
+<%
+		case temp_crumb[:type]
+		when :risk
+			%><%= link_to temp_crumb[:text], risk_path(temp_crumb[:obj]) %><%
+		when :project
+			%><%= link_to temp_crumb[:text], project_path(temp_crumb[:obj]) %><%
+		when :user
+			%><%= link_to temp_crumb[:text], user_path(temp_crumb[:obj]) %><%
+		end
+%>
+		</li>
+<%
+	end
+end
+%>
+	</ol>
+</div>

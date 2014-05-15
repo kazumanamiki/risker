@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
 			foreign_key: "target_id", class_name: "Comment", dependent: :destroy
 
 	before_save { self.nickname = nickname.downcase }
+	before_create :create_remember_token
 
 	has_secure_password
 
@@ -27,5 +28,18 @@ class User < ActiveRecord::Base
 		minimum: 6,
 		too_short: "パスワードは6文字以上で入力してください"
 	}
+
+	def self.new_remember_token
+		SecureRandom.urlsafe_base64
+	end
+
+	def self.encrypt(token)
+		Digest::SHA1.hexdigest(token.to_s)
+	end
+
+	private
+		def create_remember_token
+			self.remember_token = User.encrypt(User.new_remember_token)
+		end
 
 end

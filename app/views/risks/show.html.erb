@@ -1,45 +1,19 @@
-<div>
-	<ol class="breadcrumb">
-		<li><%= link_to @risk.project.user.nickname, user_path(@risk.project.user) %></li>
-		<li><%= link_to @risk.project.name, project_path(@risk.project) %></a></li>
-		<li class="active"><%= @risk.title %></li>
-	</ol>
-</div>
+<%= render 'shared/breadcrumb', target_crumb: @risk %>
 
 <div class="panel panel-primary">
 	<div class="panel-heading">
-		<h2 class="bg-primary">
-			<%= @risk.title %>
-		</h2>
+		<h2 class="bg-primary"><%= @risk.title %></h2>
 	</div>
 
 	<div class="panel-body">
 		<ul class="list-group">
-			<li class="list-group-item">
-				<ul class="list-inline">
-					<li>
-						<span class="label label-danger">
-							<%= RiskModelHelper.type_to_s @risk.status %>
-						</span>
-					</li>
-					<li>
-						<span class="label label-default">
-							監視間隔：<%= @risk.check_cycle %>
-						</span>
-					</li>
-					<li>
-						<span class="label label-default">
-							監視終了日：<%= @risk.watch_over_date %>
-						</span>
-					</li>
-				</ul>
-			</li>
+			<%= render "risks/risk_status_list", risk: @risk %>
 
 			<li class="list-group-item">
 				<div><p><%= @risk.details %></p></div>
 				<div class="text-right">
 					<small>
-						<a href="#">
+						<a href="#" data-toggle="modal" data-target="#modal_edit">
 							<span class="glyphicon glyphicon-pencil"></span>
 							編集
 						</a>
@@ -74,12 +48,12 @@
 				<thead>
 					<tr>
 						<th>
-							<span class="glyphicon glyphicon-warning-sign"></span>
-							<%= @cost_comment_definition::TABLE_TEXT[0] %>
+							<span class="<%= @cost_comment_definition::TABLE[0][:icon] %>"></span>
+							<%= @cost_comment_definition::TABLE[0][:text] %>
 						</th>
 						<th class="col-sm-3">
-							<span class="glyphicon glyphicon-euro"></span>
-							<%= @cost_comment_definition::TABLE_TEXT[1] %>
+							<span class="<%= @cost_comment_definition::TABLE[1][:icon] %>"></span>
+							<%= @cost_comment_definition::TABLE[1][:text] %>
 						</th>
 					</tr>
 				</thead>
@@ -95,7 +69,7 @@
 <% end %>
 				<tr>
 					<td colspan="2" class="text-right">
-						<a href="#" data-toggle="modal" data-target="#myModal">
+						<a href="#" data-toggle="modal" data-target="#modal_cost_comment">
 							<span class="glyphicon glyphicon-plus"></span>
 							追加
 						</a>
@@ -117,4 +91,5 @@
 	</div>
 </div>
 
-<%= render 'risks/cost_comment' %>
+<%= render 'risks/modal_edit', risk: @risk %>
+<%= render 'risks/modal_cost_comment', risk: @risk, def_model: @cost_comment_definition, cost_type: @tab_type %>

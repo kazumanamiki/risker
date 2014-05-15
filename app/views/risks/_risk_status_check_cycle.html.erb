@@ -1,0 +1,14 @@
+<%
+# 必要パラメータ
+# :risk リスクモデルのインスタンス
+%>
+<% if risk.check_cycle == 0 %>
+	<span class="label label-default">監視間隔：なし</span>
+<%
+else
+	cycle_text = ""
+	cycle_text << sprintf("%d日", risk.check_cycle / 24) if (risk.check_cycle >= 24)
+	cycle_text << sprintf("%d時間", risk.check_cycle % 24) if (risk.check_cycle % 24 > 0)
+%>
+	<span class="label label-default">監視間隔：<%= cycle_text %></span>
+<% end %>

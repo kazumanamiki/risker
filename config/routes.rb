@@ -1,9 +1,18 @@
 Risker::Application.routes.draw do
-  resources :cost_comments, only: [:create, :update, :destroy]
-  resources :users, only: [:show, :new, :create, :edit, :update]
-  resources :projects, only: [:show, :new, :create, :edit, :update]
-  resources :risks, only: [:show, :new, :create, :edit, :update]
+  resources :sessions,      only: [:new, :create, :destroy]
+  resources :users,         only: [:show, :create]
+  resources :projects,      only: [:show, :new, :create]
+  resources :risks,         only: [:show, :new, :create, :update] do
+    member do
+      get 'checking'
+    end
+  end
+
+  resources :cost_comments, only: [:create]
   root 'static_pages#root'
+  match '/signup', to: 'users#new', via: 'get'
+  match '/signin', to: 'sessions#new', via: 'get'
+  match '/signout', to: 'sessions#destroy', via: 'delete'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

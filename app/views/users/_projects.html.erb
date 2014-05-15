@@ -1,21 +1,36 @@
+<%
+# 必要パラメータ
+# :user Userモデルのインスタンス
+%>
 <ul class="list-group">
+<% if current_user?(user) %>
 	<li class="list-group-item">
 		<a href="<%= new_project_path %>" class="btn btn-primary">
 			<span class="glyphicon glyphicon-pencil"></span>
 			新規プロジェクトの作成
 		</a>
 	</li>
+<% end %>
 
-<% @user.projects.find_each do |project| %>
+<% if user.projects.count ==  0 %>
+	<li class="list-group-item">
+		プロジェクトがありません。
+	</li>
+<% end %>
+
+<% user.projects.find_each do |project| %>
 	<li href="<%= project_path(project) %>" class="list-group-item">
 		<h4 class="list-group-item-heading">
 			<%= link_to project.name, project_path(project) %>
 			<span class="badge">リスク数：<%= project.risks.count %></span>
 		</h4>
-	<% if project.risks.count > 0 %>
+<%
+	risks = Risk.from_projects_primary_check_by(project)
+	if risks.count > 0
+%>
 		<dl class="dl-horizontal list-inline">
 			<dt>トピックリスク</dt>
-			<% project.risks.find_each do |risk| %>
+			<% risks.each do |risk| %>
 				<dd>
 					<%= link_to risk.title, risk_path(risk), class: "text-info" %>
 					<div class="col-sm-offset-1"><small>
@@ -27,6 +42,8 @@
 				</dd>
 			<% end %>
 		</dl>
+	<% else %>
+		<p>チェックするリスクはありません。</p>
 	<% end %>
 	</li>
 <% end %>

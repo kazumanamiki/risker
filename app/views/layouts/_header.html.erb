@@ -1,7 +1,37 @@
 <div class="navbar navbar-inverse">
-  <div class="navbar-header">
-    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
-    </button>
-    <a class="navbar-brand" href="#">リスク管理サイト 『リスカ』</a>
-  </div>
+	<div class="navbar-header">
+		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+		</button>
+		<a class="navbar-brand" href="<%= root_url %>">リスク管理サイト 『リスカ』</a>
+	</div>
+	<div class="navbar-collapse collapse">
+		<ul class="nav navbar-nav">
+		</ul>
+		<ul class="nav navbar-nav navbar-right">
+		<% if signed_in? %>
+			<li>
+				<a rel="nofollow" href="<%= signout_path %>" data-method="delete">
+					<span class="glyphicon glyphicon-log-out"></span>
+					ログアウト
+				</a>
+			</li>
+		<% else %>
+			<li>
+				<a rel="nofollow" href="<%= signup_path %>">
+					<span class="glyphicon glyphicon-off"></span>
+					新規登録
+				</a>
+			</li>
+			<li>
+				<a rel="nofollow" href="<%= signin_path %>">
+					<span class="glyphicon glyphicon-log-in"></span>
+					ログイン
+				</a>
+			</li>
+		<% end %>
+		</ul>
+	</div>
 </div>

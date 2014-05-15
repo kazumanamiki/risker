@@ -26,7 +26,13 @@ module RiskModelHelper
 		end
 	end
 
-	RISK_TYPE_SELECT = [
+	RISK_CREATE_TYPE_SELECT = [
+		[self.type_to_s(StatusType::UNCONFIRMED), StatusType::UNCONFIRMED],
+		[self.type_to_s(StatusType::LATENT), StatusType::LATENT],
+		[self.type_to_s(StatusType::APPARENT), StatusType::APPARENT]
+	]
+
+	RISK_UPDATE_TYPE_SELECT = [
 		[self.type_to_s(StatusType::UNCONFIRMED), StatusType::UNCONFIRMED],
 		[self.type_to_s(StatusType::LATENT), StatusType::LATENT],
 		[self.type_to_s(StatusType::APPARENT), StatusType::APPARENT],

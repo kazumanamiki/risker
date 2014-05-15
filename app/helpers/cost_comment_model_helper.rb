@@ -6,9 +6,9 @@ module CostCommentModelHelper
 
 	module MatterCommentDefinition
 		TAB_TEXT = "顕在化時の問題"
-		TABLE_TEXT = [
-			"問題点",
-			"コスト"
+		TABLE = [
+			{ icon: "glyphicon glyphicon-warning-sign", text: "問題点" },
+			{ icon: "glyphicon glyphicon-euro", text: "コスト" }
 		]
 		ADD_TEXT = "顕在化時の問題の追加"
 		ADD_BUTTON = "問題点の追加"
@@ -16,9 +16,9 @@ module CostCommentModelHelper
 
 	module MeasureCommentDefinition
 		TAB_TEXT = "対策案"
-		TABLE_TEXT = [
-			"対策案",
-			"軽減コスト"
+		TABLE = [
+			{ icon: "glyphicon glyphicon-file", text: "対策案" },
+			{ icon: "glyphicon glyphicon-euro", text: "軽減コスト" }
 		]
 		ADD_TEXT = "対策案の追加"
 		ADD_BUTTON = "対策案の追加"
