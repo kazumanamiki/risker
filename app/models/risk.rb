@@ -51,7 +51,7 @@ class Risk < ActiveRecord::Base
 	SQL_AND = " and "
 	SQL_CHECK_WATCH_OVER_DATE = "watch_over_date > :datetime"
 	SQL_CHECK_NEXT_DATE       = "next_check_date < :datetime"
-	SQL_CHECK_NEXT_DATE_NULL  = "next_check_date not null"
+	SQL_CHECK_NEXT_DATE_NULL  = "next_check_date <> :null"
 	SQL_CHECK_STATUS          = "status <> :extinction"
 
 
@@ -137,6 +137,7 @@ class Risk < ActiveRecord::Base
 			ret = {}
 			ret[:datetime] = DateTime.now
 			ret[:extinction] = StatusType::EXTINCTION.to_s
+			ret[:null] = nil
 			ret
 		end
 end
