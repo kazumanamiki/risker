@@ -49,10 +49,10 @@ class Risk < ActiveRecord::Base
 	# ----- 検索用SQL
 
 	SQL_AND = " and "
-	SQL_CHECK_WATCH_OVER_DATE = "watch_over_date > :datetime"
-	SQL_CHECK_NEXT_DATE       = "next_check_date < :datetime"
-	SQL_CHECK_NEXT_DATE_NULL  = "next_check_date <> :null"
-	SQL_CHECK_STATUS          = "status <> :extinction"
+	SQL_CHECK_WATCH_OVER_DATE = "(watch_over_date >= :datetime)"
+	SQL_CHECK_NEXT_DATE       = "(next_check_date < :datetime)"
+	SQL_CHECK_NEXT_DATE_NULL  = "(next_check_date not :null)"
+	SQL_CHECK_STATUS          = "(status <> :extinction)"
 
 
 	# ----- 検索用クラスメソッド
@@ -95,7 +95,7 @@ class Risk < ActiveRecord::Base
 	# @params [Project] project 検索対象のプロジェクト
 	# @return [ActiveRecord] アクティブレコード
 	def self.from_users_primary_check_by(user, params = {})
-		users_project_ids = "select project_id from projects where user_id = :user_id"
+		users_project_ids = "select id from projects where user_id = :user_id"
 		sql_where = "project_id IN (#{users_project_ids})"
 		sql_where << SQL_AND << SQL_CHECK_WATCH_OVER_DATE
 		sql_where << SQL_AND << SQL_CHECK_NEXT_DATE

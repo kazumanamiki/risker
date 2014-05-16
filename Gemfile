@@ -27,12 +27,13 @@ gem 'therubyracer'
 # twitter bootstrap helpers gem, e.g., alerts etc...
 #gem 'twitter-bootswatch-rails-helpers'
 # use bootstrap-datetimepicker plugin
-gem 'momentjs-rails', '~> 2.5.0'
-gem 'bootstrap3-datetimepicker-rails', '~> 3.0.0'
+# gem 'momentjs-rails', '~> 2.5.0'
+# gem 'bootstrap3-datetimepicker-rails', '~> 3.0.0'
 
 gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.0.0'
 gem 'jquery-rails'
+gem 'jquery-ui-rails'
 gem 'turbolinks'
 gem 'jbuilder', '~> 1.2'
 

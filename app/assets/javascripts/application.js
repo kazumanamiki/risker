@@ -13,13 +13,16 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
-//= require moment
-//= require bootstrap-datetimepicker
+//= require jquery.ui.all
 
 var ready = function() {
 	// datetimepikerのスクリプト
-	$('#datetimepicker_new').datetimepicker({
-		pickTime: false
+	$('input.datepicker').datepicker({
+		dateFormat: 'yy-mm-dd',
+		yearSuffix: '年',
+		monthNames: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+		dayNamesMin: ['日', '月', '火', '水', '木', '金', '土'],
+		minDate: new Date()
 	});
 	$('button.modal-cancel').click(function(){
 		$(this).closest("form")[0].reset();

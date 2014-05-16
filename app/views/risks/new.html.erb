@@ -26,10 +26,7 @@
 				</div>
 				<div class="form-group">
 					<%= f.label :watch_over_date, "監視終了日", class: "control-label" %>
-					<div class='input-group date' id='datetimepicker_new' data-date-format="YYYY-MM-DD">
-						<%= f.text_field :watch_over_date, class: "form-control" %>
-						<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-					</div>
+					<%= f.text_field :watch_over_date, class: "form-control datepicker" %>
 				</div>
 				<%= f.hidden_field :project_id %>
 				<div class="form-group">
