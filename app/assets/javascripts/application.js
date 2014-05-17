@@ -24,9 +24,12 @@ var ready = function() {
 		dayNamesMin: ['日', '月', '火', '水', '木', '金', '土'],
 		minDate: new Date()
 	});
+	// モーダルキャンセルした場合はformをリセットする
 	$('button.modal-cancel').click(function(){
 		$(this).closest("form")[0].reset();
 	});
 };
 $(document).ready(ready)
 $(document).on('page:load', ready)
+
+

@@ -1,19 +1,6 @@
-<ul class="nav nav-pills nav-stacked">
-	<li class="active">
-		<a href="<%= user_path(current_user) %>">
-			<%= current_user.nickname %>
-		</a>
-	</li>
-	<li>
-		<a href="<%= user_path(current_user, tab_active: "projects") %>">
-			<span class="glyphicon glyphicon-pencil"></span>
-			My プロジェクト
-		</a>
-	</li>
-	<li>
-		<a href="<%= user_path(current_user, tab_active: "risks") %>">
-			<span class="glyphicon glyphicon-eye-open"></span>
-			My リスク
-		</a>
-	</li>
-</ul>
+<% if signed_in? %>
+	<div class="row">
+		<%= render "layouts/sidebar_user" %>
+	</div>
+<% end %>
+<%= render "layouts/sidebar_twitter" %>
