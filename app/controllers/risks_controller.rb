@@ -37,11 +37,9 @@ class RisksController < ApplicationController
 	end
 
 	def checking
-		@risk.touch
-		respond_to do |format|
-			format.html { redirect_to risk_path(@risk) }
-			format.js
-		end
+		@risk.save
+		flash[:success] = sprintf("リスクの状態を最新にしました")
+		redirect_to risk_path(@risk)
 	end
 
 	private
