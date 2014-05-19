@@ -40,6 +40,10 @@ next_check_risk = Risk.from_projects_check_date_oder(@project).first
 							リスク
 						</th>
 						<th class="col-sm-2">
+							<span class="glyphicon glyphicon-signal"></span>
+							優先度
+						</th>
+						<th class="col-sm-2">
 							<span class="glyphicon glyphicon-calendar"></span>
 							チェック日
 						</th>
@@ -57,13 +61,14 @@ next_check_risk = Risk.from_projects_check_date_oder(@project).first
 							<span class="glyphicon glyphicon-search"></span>
 						</a>
 					</td>
+					<td><%= priority_to_str(risk.priority) %></td>
 					<td><%= risk.next_check_date_text %></td>
 					<td><%= RiskModelHelper.type_to_s risk.status %></td>
 				</tr>
 			<% end %>
 			<% if current_user?(@project.user) %>
 				<tr>
-					<td colspan="3" class="text-right">
+					<td colspan="4" class="text-right">
 						<a href="<%= new_risk_path({ project: @project.id }) %>">
 							<span class="glyphicon glyphicon-plus"></span>
 							リスクの追加

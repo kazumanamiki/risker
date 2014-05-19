@@ -1,0 +1,43 @@
+<%
+# 必要パラメータ
+# :risk リスクモデルのインスタンス
+%>
+<div class="modal fade" id="modal_cost_comment" tabindex="-1" role="dialog" aria-labelledby="costCommentModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title"><%= CostCommentHelper::MeasureCommentDefinition::ADD_TEXT %></h4>
+      </div>
+      <div id="cost_comment-error-message-area">
+        <!-- エラーメッセージ用 -->
+      </div>
+      <%= form_tag(cost_comments_path, { method: :create, class: "form-horizontal", remote: true }) do %>
+        <div class="modal-body">
+<%
+  [
+    {
+      id: :comment,
+      label: CostCommentHelper::MeasureCommentDefinition::TABLE[0][:text],
+      type: :text_area
+    },
+    {
+      id: :cost_memo,
+      label: CostCommentHelper::MeasureCommentDefinition::TABLE[1][:text],
+      type: :text_area
+    }
+  ].each do |form_data|
+%>
+          <%= render 'risks/modal_cost_comment/form_parts', form_data: form_data %>
+<% end %>
+          <%= hidden_field_tag "cost_comment[cost_type]", CostCommentModelHelper::CostCommentType::MEASURE %>
+          <%= hidden_field_tag "cost_comment[risk_id]", risk.id %>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default modal-cancel" data-dismiss="modal">キャンセル</button>
+          <%= submit_tag CostCommentHelper::MeasureCommentDefinition::ADD_BUTTON, class: "btn btn-primary" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

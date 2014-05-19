@@ -1,0 +1,14 @@
+<%
+# 必要パラメータ
+# :risk リスクモデルのインスタンス
+%>
+<li class="list-group-item">
+	<ul class="list-inline">
+		<li id="risk_status_priority">
+			<%= render "risks/status_list/risk_status_priority", risk: risk %>
+		</li>
+		<li><%= render "risks/status_list/risk_status_state", risk: risk %></li>
+		<li><%= render "risks/status_list/risk_status_check_cycle", risk: risk %></li>
+		<li><%= render "risks/status_list/risk_status_watch_over", risk: risk %></li>
+	</ul>
+</li>

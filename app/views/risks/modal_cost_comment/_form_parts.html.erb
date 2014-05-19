@@ -1,0 +1,18 @@
+<%
+# 必要パラメータ
+# :form_data フォームに使用するデータ
+%>
+<div id="form-group-cost_comment_<%= form_data[:id] %>" class="form-group">
+	<%= label :cost_comment, form_data[:id], form_data[:label], class: "col-sm-3 control-label" %>
+	<div class="col-sm-9">
+<%
+case form_data[:type]
+when :text_area
+	%><%= text_area_tag "cost_comment[#{form_data[:id]}]", "", class: "form-control", placeholder: form_data[:label] %><%
+when :select
+
+	%><%= select_tag("cost_comment[#{form_data[:id]}]", options_for_select(form_data[:data]), { class: "form-control" }) %><%
+end
+%>
+	</div>
+</div>

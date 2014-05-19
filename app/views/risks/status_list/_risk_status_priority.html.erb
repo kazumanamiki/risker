@@ -1,0 +1,12 @@
+<%
+# 必要パラメータ
+# :risk リスクモデルのインスタンス
+%>
+<%
+priority_text = sprintf("優先度：%s", priority_to_str(risk.priority))
+label_text = sprintf("label label-%s", priority_to_bootstrap_level(risk.priority))
+%>
+<span class="<%= label_text %>">
+	<%= priority_text %>
+</span>
+

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140515051123) do
+ActiveRecord::Schema.define(version: 20140519043417) do
 
   create_table "comments", force: true do |t|
     t.integer  "user_id"
@@ -31,6 +31,9 @@ ActiveRecord::Schema.define(version: 20140515051123) do
     t.integer  "risk_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "probability"
+    t.integer  "influence"
+    t.integer  "priority"
   end
 
   add_index "cost_comments", ["cost_type", "risk_id"], name: "index_cost_comments_on_cost_type_and_risk_id"
@@ -52,6 +55,7 @@ ActiveRecord::Schema.define(version: 20140515051123) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "next_check_date"
+    t.integer  "priority"
   end
 
   add_index "risks", ["project_id", "next_check_date"], name: "index_risks_on_project_id_and_next_check_date"

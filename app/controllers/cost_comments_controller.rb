@@ -5,6 +5,7 @@ class CostCommentsController < ApplicationController
 
 	def create
 		@saved_flag = @cost_comment.save # js用に変数に格納
+		@cost_comment = CostComment.find_by_id(@cost_comment.id) #表示用にselectしなおす
 		respond_to do |format|
 			format.html { redirect_to risk_path(Risk.find(params[:cost_comment][:risk_id])) }
 			format.js
@@ -26,6 +27,6 @@ class CostCommentsController < ApplicationController
 		end
 
 		def cost_comment_params
-			params.require(:cost_comment).permit(:cost_type, :comment, :cost_memo, :risk_id)
+			params.require(:cost_comment).permit(:cost_type, :comment, :cost_memo, :risk_id, :probability, :influence)
 		end
 end

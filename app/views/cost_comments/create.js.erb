@@ -1,12 +1,29 @@
 <% if @saved_flag %>
 	// ----- 成功時の処理 -----
-	// 表に項目を追加
-	$('#cost-comment-table tbody tr:last').before(
-		"<tr>" +
-			"<td><%= @cost_comment.comment %></td>" +
-			"<td><%= @cost_comment.cost_memo %></td>" +
-		"</tr>"
-		);
+<%		if @cost_comment.cost_type == CostCommentModelHelper::CostCommentType::MATTER %>
+		// ----- 問題点の場合の処理 -----
+		// 表に項目を追加
+		$('#cost-comment-table tbody tr:last').before(
+			"<tr>" +
+				"<td><%= @cost_comment.comment %></td>" +
+				"<td><%= CostCommentHelper.probability_to_str(@cost_comment.probability) %></td>" +
+				"<td><%= CostCommentHelper.influence_to_str(@cost_comment.influence) %></td>" +
+				"<td><%= @cost_comment.cost_memo %></td>" +
+			"</tr>"
+			);
+		// リスクの優先度項目を更新
+		$("#risk_status_priority").html("<%= escape_javascript(render 'risks/status_list/risk_status_priority', risk: @cost_comment.risk) %>")
+
+<%		else %>
+		// ----- 解決案の場合の処理 -----
+		// 表に項目を追加
+		$('#cost-comment-table tbody tr:last').before(
+			"<tr>" +
+				"<td><%= @cost_comment.comment %></td>" +
+				"<td><%= @cost_comment.cost_memo %></td>" +
+			"</tr>"
+			);
+<%		end %>
 
 	// 項目を空にする
 	$("#cost_comment_cost_memo").val("");

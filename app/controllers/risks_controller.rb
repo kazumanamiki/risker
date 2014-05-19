@@ -1,5 +1,5 @@
 class RisksController < ApplicationController
-	include CostCommentModelHelper
+	include CostCommentHelper
 
 	before_action :signed_in_user
 	before_action :correct_user, only: [:create, :update, :checking]

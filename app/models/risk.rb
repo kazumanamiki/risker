@@ -12,8 +12,8 @@ class Risk < ActiveRecord::Base
 	has_many :marked_comments, -> { where id_type: CommentModelHelper::CommentType::RISK },
 			foreign_key: "target_id", class_name: "Comment", dependent: :destroy
 
-
 	before_save :create_next_check_date
+	before_save :calc_priority
 
 	CommentModelHelper.helper_build_comment CommentModelHelper::CommentType::RISK
 
@@ -129,6 +129,11 @@ class Risk < ActiveRecord::Base
 			else
 				self.next_check_date = DateTime.now.since(60 * 60 * self.check_cycle)
 			end
+		end
+
+		# レコードの保存の際に優先度をCostCommentから取得し決定する
+		def calc_priority
+			self.priority = CostComment.from_risks_matter_max_priority_by(self)
 		end
 
 		# whereで使用するhashパラメータの初期値生成

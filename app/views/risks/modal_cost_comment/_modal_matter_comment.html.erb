@@ -1,15 +1,13 @@
 <%
 # 必要パラメータ
 # :risk リスクモデルのインスタンス
-# :def_model ページ表記が含まれる定義モジュール(CostCommentModelHelper参照)
-# :cost_type コストコメントの種別(CostCommentModelHelper::CostCommentType参照)
 %>
 <div class="modal fade" id="modal_cost_comment" tabindex="-1" role="dialog" aria-labelledby="costCommentModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title"><%= def_model::ADD_TEXT %></h4>
+        <h4 class="modal-title"><%= CostCommentHelper::MatterCommentDefinition::ADD_TEXT %></h4>
       </div>
       <div id="cost_comment-error-message-area">
         <!-- エラーメッセージ用 -->
@@ -20,27 +18,36 @@
   [
     {
       id: :comment,
-      label: def_model::TABLE[0][:text]
+      label: CostCommentHelper::MatterCommentDefinition::TABLE[0][:text],
+      type: :text_area
+    },
+    {
+      id: :probability,
+      label: CostCommentHelper::MatterCommentDefinition::TABLE[1][:text],
+      type: :select,
+      data: CostCommentHelper::PROBABILITY_SELECT
+    },
+    {
+      id: :influence,
+      label: CostCommentHelper::MatterCommentDefinition::TABLE[2][:text],
+      type: :select,
+      data: CostCommentHelper::INFLUENCE_SELECT
     },
     {
       id: :cost_memo,
-      label: def_model::TABLE[1][:text]
+      label: CostCommentHelper::MatterCommentDefinition::TABLE[3][:text],
+      type: :text_area
     }
-  ].each do |modal_data|
+  ].each do |form_data|
 %>
-          <div id="form-group-cost_comment_<%= modal_data[:id] %>" class="form-group">
-            <%= label :cost_comment, modal_data[:id], modal_data[:label], class: "col-sm-3 control-label" %>
-            <div class="col-sm-9">
-              <%= text_area_tag "cost_comment[#{modal_data[:id]}]", "", class: "form-control", placeholder: modal_data[:label] %>
-            </div>
-          </div>
+          <%= render 'risks/modal_cost_comment/form_parts', form_data: form_data %>
 <% end %>
-          <%= hidden_field_tag "cost_comment[cost_type]", cost_type %>
+          <%= hidden_field_tag "cost_comment[cost_type]", CostCommentModelHelper::CostCommentType::MATTER %>
           <%= hidden_field_tag "cost_comment[risk_id]", risk.id %>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default modal-cancel" data-dismiss="modal">キャンセル</button>
-          <%= submit_tag def_model::ADD_BUTTON, class: "btn btn-primary" %>
+          <%= submit_tag CostCommentHelper::MatterCommentDefinition::ADD_BUTTON, class: "btn btn-primary" %>
         </div>
       <% end %>
     </div>
