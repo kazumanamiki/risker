@@ -11,6 +11,7 @@
 
 			<li class="list-group-item">
 				<div><p><%= @risk.details %></p></div>
+			<% if current_user?(@risk.project.user) %>
 				<div class="text-right">
 					<small>
 						<a href="#" data-toggle="modal" data-target="#modal_edit">
@@ -19,6 +20,7 @@
 						</a>
 					</small>
 				</div>
+			<% end %>
 			</li>
 		</ul>
 	</div>
@@ -67,6 +69,7 @@
 					<td><%= table_data.cost_memo %></td>
 				</tr>
 <% end %>
+<% if current_user?(@risk.project.user) %>
 				<tr>
 					<td colspan="2" class="text-right">
 						<a href="#" data-toggle="modal" data-target="#modal_cost_comment">
@@ -75,6 +78,7 @@
 						</a>
 					</td>
 				</tr>
+<% end %>
 			</table>
 		</div>
 	</div>

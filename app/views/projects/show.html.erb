@@ -61,6 +61,7 @@ next_check_risk = Risk.from_projects_check_date_oder(@project).first
 					<td><%= RiskModelHelper.type_to_s risk.status %></td>
 				</tr>
 			<% end %>
+			<% if current_user?(@project.user) %>
 				<tr>
 					<td colspan="3" class="text-right">
 						<a href="<%= new_risk_path({ project: @project.id }) %>">
@@ -69,6 +70,7 @@ next_check_risk = Risk.from_projects_check_date_oder(@project).first
 						</a>
 					</td>
 				</tr>
+			<% end %>
 			</table>
 		</div>
 	</div>
