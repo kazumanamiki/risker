@@ -4,4 +4,7 @@ class StaticPagesController < ApplicationController
 			redirect_to user_path(current_user)
 		end
 	end
+
+	def history
+	end
 end
