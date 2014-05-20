@@ -13,8 +13,10 @@ describe User do
 	it { should respond_to(:password_confirmation) }
 
 	it { should respond_to(:projects) }
-	it { should respond_to(:build_marked_comment).with(1).argument }
 	it { should respond_to(:comments) }
+	it { should respond_to(:marked_comments) }
+
+	it { should respond_to(:build_marked_comment).with(1).argument }
 
 	it { should be_valid }
 

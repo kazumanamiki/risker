@@ -39,6 +39,14 @@ class Risk < ActiveRecord::Base
 		message: "チェックサイクルは0〜#{24 * 7 * 4}の間で整数で入力してください"
 	}
 
+	validates_numericality_of :priority, {
+		only_integer: true,
+		allow_nil: true,
+		greater_than_or_equal_to: 1,
+		less_than_or_equal_to: 10,
+		message: "優先度は1〜10の間で整数で入力してください"
+	}
+
 	validates_presence_of :watch_over_date, {
 		message: "監視終了日時を空にはできません"
 	}
@@ -133,7 +141,7 @@ class Risk < ActiveRecord::Base
 
 		# レコードの保存の際に優先度をCostCommentから取得し決定する
 		def calc_priority
-			self.priority = CostComment.from_risks_matter_max_priority_by(self)
+			self.priority = self.matter_comments.maximum(:priority)
 		end
 
 		# whereで使用するhashパラメータの初期値生成

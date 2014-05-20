@@ -9,8 +9,7 @@ class ProjectsController < ApplicationController
 	end
 
 	def create
-		@project = Project.new(project_params)
-		@project.user_id = current_user.id
+		@project = current_user.projects.build(project_params)
 		if @project.save
 			#成功処理
 			flash[:success] = sprintf("「%s」を追加しました", @project.name)

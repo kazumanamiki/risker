@@ -11,9 +11,9 @@ describe Project do
 	it { should respond_to(:user_id) }
 
 	it { should respond_to(:risks) }
-	it { should respond_to(:build_marked_comment).with(1).argument }
-	it { should respond_to(:marked_comments) }
 	it { should respond_to(:user) }
+	it { should respond_to(:marked_comments) }
+	it { should respond_to(:build_marked_comment).with(1).argument }
 
 	it { should be_valid }
 

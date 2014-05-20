@@ -21,9 +21,6 @@ class CostCommentsController < ApplicationController
 		# 削除処理
 		@cost_comment.destroy
 
-		# リスクを最新の状態に更新する
-		risk.save
-
 		redirect_to(risk_path(risk, tab_type: tab_type))
 	end
 

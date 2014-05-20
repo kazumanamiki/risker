@@ -17,6 +17,7 @@ FactoryGirl.define do
 		check_cycle 100
 		watch_over_date Date.new(2014, 01, 01)
 		sequence(:project_id) { |n| n }
+		priority 1
 	end
 
 	factory :cost_comment do
@@ -27,6 +28,21 @@ FactoryGirl.define do
 
 		factory :matter_comment do
 			cost_type CostCommentModelHelper::CostCommentType::MATTER
+
+			factory :ll_matter_comment do
+				probability CostCommentModelHelper::ProbabilityType::LOW
+				influence CostCommentModelHelper::InfluenceType::LOW
+			end
+
+			factory :mm_matter_comment do
+				probability CostCommentModelHelper::ProbabilityType::MIDDLE
+				influence CostCommentModelHelper::InfluenceType::MIDDLE
+			end
+
+			factory :hh_matter_comment do
+				probability CostCommentModelHelper::ProbabilityType::HIGH
+				influence CostCommentModelHelper::InfluenceType::HIGH
+			end
 		end
 
 		factory :measure_comment do

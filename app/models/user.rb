@@ -5,12 +5,12 @@ class User < ActiveRecord::Base
 	has_many :marked_comments, -> { where id_type: CommentModelHelper::CommentType::USER },
 			foreign_key: "target_id", class_name: "Comment", dependent: :destroy
 
+	CommentModelHelper.helper_build_comment CommentModelHelper::CommentType::USER
+
 	before_save { self.nickname = nickname.downcase }
 	before_create :create_remember_token
 
 	has_secure_password
-
-	CommentModelHelper.helper_build_comment CommentModelHelper::CommentType::USER
 
 	validates_length_of :nickname, {
 		minimum: 4,
