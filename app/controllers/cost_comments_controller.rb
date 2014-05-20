@@ -24,7 +24,6 @@ class CostCommentsController < ApplicationController
 		# リスクを最新の状態に更新する
 		risk.save
 
-		flash.now[:success] = "問題点を削除しました"
 		redirect_to(risk_path(risk, tab_type: tab_type))
 	end
 
@@ -37,7 +36,7 @@ class CostCommentsController < ApplicationController
 				@cost_comment = CostComment.find(params[:id])
 			end
 			unless current_user?(@cost_comment.risk.project.user)
-				flash.now[:danger] = "操作に対する権限がありません"
+				flash[:danger] = "操作に対する権限がありません"
 				redirect_to(root_path)
 			end
 		end

@@ -78,5 +78,13 @@ next_check_risk = Risk.from_projects_check_date_oder(@project).first
 			<% end %>
 			</table>
 		</div>
+	<% if current_user?(@project.user) %>
+		<div class="pull-left">
+			<a href="<%= project_path(@project) %>" class="btn btn-default btn-sm" data-method="delete" data-confirm="プロジェクトを削除してよろしいですか？">
+				<span class="glyphicon glyphicon-trash"></span>
+				プロジェクトを削除する
+			</a>
+		</div>
+	<% end %>
 	</div>
 </div>

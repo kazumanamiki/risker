@@ -2,20 +2,19 @@ class RisksController < ApplicationController
 	include CostCommentHelper
 
 	before_action :signed_in_user
-	before_action :correct_user, only: [:create, :update, :checking]
+	before_action :correct_user, only: [:create, :update, :checking, :destroy]
 
 	def new
 		@project = Project.find(params[:project])
 		@risk = Risk.new(project_id: @project.id)
 	rescue ActiveRecord::RecordNotFound
 		# Projectのレコードが存在しない場合のエラー
-		flash.now[:warning] = sprintf("Projectが選択されていません。")
+		flash[:warning] = sprintf("Projectが選択されていません。")
 		redirect_to user_path(current_user)
 	end
 
 	def create
 		if @risk.save
-			flash.now[:success] = sprintf("「%s」を追加しました。", @risk.title)
 			redirect_to @risk
 		else
 			render 'new'
@@ -38,8 +37,17 @@ class RisksController < ApplicationController
 
 	def checking
 		@risk.save
-		flash.now[:success] = sprintf("リスクの状態を最新にしました")
+		flash[:success] = sprintf("リスクの状態を最新にしました")
 		redirect_to risk_path(@risk)
+	end
+
+	def destroy
+		project = @risk.project
+		flash[:success] = sprintf("リスク「%s」を削除しました", @risk.title)
+
+		@risk.destroy
+
+		redirect_to project_path(project)
 	end
 
 	private

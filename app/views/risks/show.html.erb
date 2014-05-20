@@ -94,10 +94,20 @@
 <% end %>
 			</table>
 		</div>
-
-		<div class="pull-right">
-			<%= link_to "リスクを最新の状態にする", checking_risk_path, class: "btn btn-primary btn-sm" %>
+<% if current_user?(@risk.project.user) %>
+		<div class="pull-left">
+			<a href="<%= risk_path(@risk) %>" class="btn btn-default btn-sm" data-method="delete" data-confirm="リスクはあなたの大切な資産です。本当にリスクを削除しますか？">
+				<span class="glyphicon glyphicon-trash"></span>
+				リスクを削除する
+			</a>
 		</div>
+		<div class="pull-right">
+			<a href="<%= checking_risk_path %>" class="btn btn-primary btn-sm">
+				<span class="glyphicon glyphicon-refresh"></span>
+				リスクを最新の状態にする
+			</a>
+		</div>
+<% end %>
 	</div>
 
 	<div class="panel-footer clearfix">

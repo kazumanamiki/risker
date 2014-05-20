@@ -1,8 +1,8 @@
 Risker::Application.routes.draw do
   resources :sessions,      only: [:new, :create, :destroy]
   resources :users,         only: [:show, :create]
-  resources :projects,      only: [:show, :new, :create]
-  resources :risks,         only: [:show, :new, :create, :update] do
+  resources :projects,      only: [:show, :new, :create, :destroy]
+  resources :risks,         only: [:show, :new, :create, :update, :destroy] do
     member do
       get 'checking'
     end
