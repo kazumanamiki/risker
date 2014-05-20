@@ -1,7 +1,7 @@
 class CostCommentsController < ApplicationController
 
 	before_action :signed_in_user
-	before_action :correct_user, only: [:create]
+	before_action :correct_user, only: [:create, :destroy]
 
 	def create
 		@saved_flag = @cost_comment.save # js用に変数に格納
@@ -10,6 +10,22 @@ class CostCommentsController < ApplicationController
 			format.html { redirect_to risk_path(Risk.find(params[:cost_comment][:risk_id])) }
 			format.js
 		end
+	end
+
+	def destroy
+		# 事前に対象のリスクを取得
+		risk = @cost_comment.risk
+		# 事前に削除対象のタイプを取得
+		tab_type = @cost_comment.cost_type
+
+		# 削除処理
+		@cost_comment.destroy
+
+		# リスクを最新の状態に更新する
+		risk.save
+
+		flash.now[:success] = "問題点を削除しました"
+		redirect_to(risk_path(risk, tab_type: tab_type))
 	end
 
 	private

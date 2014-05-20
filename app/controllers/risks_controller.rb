@@ -9,13 +9,13 @@ class RisksController < ApplicationController
 		@risk = Risk.new(project_id: @project.id)
 	rescue ActiveRecord::RecordNotFound
 		# Projectのレコードが存在しない場合のエラー
-		flash[:warning] = sprintf("Projectが選択されていません。")
+		flash.now[:warning] = sprintf("Projectが選択されていません。")
 		redirect_to user_path(current_user)
 	end
 
 	def create
 		if @risk.save
-			flash[:success] = sprintf("「%s」を追加しました。", @risk.title)
+			flash.now[:success] = sprintf("「%s」を追加しました。", @risk.title)
 			redirect_to @risk
 		else
 			render 'new'
@@ -38,7 +38,7 @@ class RisksController < ApplicationController
 
 	def checking
 		@risk.save
-		flash[:success] = sprintf("リスクの状態を最新にしました")
+		flash.now[:success] = sprintf("リスクの状態を最新にしました")
 		redirect_to risk_path(@risk)
 	end
 

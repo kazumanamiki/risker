@@ -8,7 +8,7 @@ Risker::Application.routes.draw do
     end
   end
 
-  resources :cost_comments, only: [:create]
+  resources :cost_comments, only: [:create, :destroy]
   root 'static_pages#root'
   match '/signup', to: 'users#new', via: 'get'
   match '/signin', to: 'sessions#new', via: 'get'

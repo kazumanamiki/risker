@@ -5,7 +5,12 @@
 		// 表に項目を追加
 		$('#cost-comment-table tbody tr:last').before(
 			"<tr>" +
-				"<td><%= @cost_comment.comment %></td>" +
+				"<td>" +
+					"<%= @cost_comment.comment %>" +
+					"<a href='<%= cost_comment_path(@cost_comment) %>' data-method='delete' data-confirm='削除してよろしいですか？'>" +
+						"<span class='glyphicon glyphicon-trash'></span>" +
+					"</a>" +
+				"</td>" +
 				"<td><%= CostCommentHelper.probability_to_str(@cost_comment.probability) %></td>" +
 				"<td><%= CostCommentHelper.influence_to_str(@cost_comment.influence) %></td>" +
 				"<td><%= @cost_comment.cost_memo %></td>" +
@@ -19,7 +24,12 @@
 		// 表に項目を追加
 		$('#cost-comment-table tbody tr:last').before(
 			"<tr>" +
-				"<td><%= @cost_comment.comment %></td>" +
+				"<td>" +
+					"<%= @cost_comment.comment %>" +
+					"<a href='<%= cost_comment_path(@cost_comment) %>' data-method='delete' data-confirm='削除してよろしいですか？'>" +
+						"<span class='glyphicon glyphicon-trash'></span>" +
+					"</a>" +
+				"</td>" +
 				"<td><%= @cost_comment.cost_memo %></td>" +
 			"</tr>"
 			);

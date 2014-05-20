@@ -63,7 +63,14 @@
 	table_datas.find_each do |table_data|
 %>
 				<tr>
-					<td><%= table_data.comment %></td>
+					<td>
+						<%= table_data.comment %>
+<% if current_user?(@risk.project.user) %>
+						<a href="<%= cost_comment_path(table_data) %>" data-method="delete" data-confirm="削除してよろしいですか？">
+							<span class="glyphicon glyphicon-trash"></span>
+						</a>
+<% end %>
+					</td>
 				<% if table_data.cost_type == CostCommentModelHelper::CostCommentType::MATTER %>
 					<td><%= CostCommentHelper.probability_to_str(table_data.probability) %></td>
 					<td><%= CostCommentHelper.influence_to_str(table_data.influence) %></td>
