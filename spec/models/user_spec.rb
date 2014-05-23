@@ -11,6 +11,7 @@ describe User do
 	it { should respond_to(:password_digest) }
 	it { should respond_to(:password) }
 	it { should respond_to(:password_confirmation) }
+	it { should respond_to(:email) }
 
 	it { should respond_to(:projects) }
 	it { should respond_to(:comments) }
@@ -61,6 +62,60 @@ describe User do
 		describe "5文字以下は" do
 			before { user.password = user.password_confirmation = "a" * 5 }
 
+			it { should_not be_valid }
+		end
+	end
+
+	describe "emailの" do
+		describe "nilは" do
+			before { user.email = nil }
+			it { should_not be_valid }
+		end
+
+		describe "空は" do
+			before { user.email = "" }
+			it { should_not be_valid }
+		end
+
+		describe "メールアドレスでない文字列は" do
+			describe "英字だけ" do
+				before { user.email = "aaaaa" }
+				it { should_not be_valid }
+			end
+
+			describe "日本語が含まれている" do
+				before { user.email = "てすと@risker.info" }
+				it { should_not be_valid }
+			end
+
+			describe "ドメインが不正" do
+				before { user.email = "test@risker" }
+				it { should_not be_valid }
+			end
+		end
+
+		describe "正しいメールアドレスは" do
+			before { user.email = "test.user@risker.info" }
+			it { should be_valid }
+		end
+
+		describe "大文字は小文字になる" do
+			before do
+				user.email = "Test.User@Risker.Info"
+				user.save
+			end
+			it { expect(user.email).to eq "test.user@risker.info" }
+		end
+
+		describe "重複しての登録はできない" do
+			let(:dup_user) { FactoryGirl.create(:user) }
+			before do
+				dup_user.email = "test.user@risker.info"
+				dup_user.password = "foobar"
+				dup_user.password_confirmation = "foobar"
+				dup_user.save
+				user.email = dup_user.email
+			end
 			it { should_not be_valid }
 		end
 	end

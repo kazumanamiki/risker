@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
 	CommentModelHelper.helper_build_comment CommentModelHelper::CommentType::USER
 
 	before_save { self.nickname = nickname.downcase }
+	before_save { email.downcase! }
 	before_create :create_remember_token
 
 	has_secure_password
@@ -18,6 +19,10 @@ class User < ActiveRecord::Base
 		maximum: 30,
 		too_long: "ニックネームは30文字以内で入力してください"
 	}
+
+	# TODO ちゃんとしたチェックに置き換えないといけない
+	VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
+	validates :email, presence: true, format: { with: VALID_EMAIL_REGEX }, uniqueness: { case_sensitive: false }
 
 	validates_uniqueness_of :nickname, {
 		case_sensitive: false,

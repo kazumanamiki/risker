@@ -121,7 +121,7 @@ class Risk < ActiveRecord::Base
 
 	def next_check_date_text
 		return "なし" if next_check_date.nil?
-		return "監視期限切れ" if watch_over_date < DateTime.now
+		return "監視期限切れ" if watch_over_date < Time.zone.now
 		return next_check_date.strftime("%Y-%-m-%-d %-H時")
 	end
 
@@ -135,7 +135,7 @@ class Risk < ActiveRecord::Base
 			if (self.check_cycle == 0)
 				self.next_check_date = nil
 			else
-				self.next_check_date = DateTime.now.since(60 * 60 * self.check_cycle)
+				self.next_check_date = Time.zone.now.since(60 * 60 * self.check_cycle)
 			end
 		end
 
@@ -148,7 +148,7 @@ class Risk < ActiveRecord::Base
 		# @return [Hash] where句で使用するhashパラメータ
 		def self.generate_where_hash
 			ret = {}
-			ret[:datetime] = DateTime.now
+			ret[:datetime] = Time.zone.now
 			ret[:extinction] = StatusType::EXTINCTION.to_s
 			ret[:null] = nil
 			ret

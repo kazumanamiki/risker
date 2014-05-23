@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140519043417) do
+ActiveRecord::Schema.define(version: 20140522080806) do
 
   create_table "comments", force: true do |t|
     t.integer  "user_id"
@@ -37,6 +37,27 @@ ActiveRecord::Schema.define(version: 20140519043417) do
   end
 
   add_index "cost_comments", ["cost_type", "risk_id"], name: "index_cost_comments_on_cost_type_and_risk_id"
+
+  create_table "limit_apis", force: true do |t|
+    t.string   "api"
+    t.integer  "counter"
+    t.datetime "counted_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "limit_apis", ["api"], name: "index_limit_apis_on_api", unique: true
+
+  create_table "password_reset_hashes", force: true do |t|
+    t.integer  "user_id"
+    t.string   "hash_pass"
+    t.boolean  "enable_flag"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "password_reset_hashes", ["hash_pass"], name: "index_password_reset_hashes_on_hash_pass"
+  add_index "password_reset_hashes", ["user_id"], name: "index_password_reset_hashes_on_user_id", unique: true
 
   create_table "projects", force: true do |t|
     t.string   "name"
@@ -66,8 +87,10 @@ ActiveRecord::Schema.define(version: 20140519043417) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "remember_token"
+    t.string   "email"
   end
 
+  add_index "users", ["email"], name: "index_users_on_email", unique: true
   add_index "users", ["nickname"], name: "index_users_on_nickname", unique: true
   add_index "users", ["remember_token"], name: "index_users_on_remember_token"
 

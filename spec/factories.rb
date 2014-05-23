@@ -3,6 +3,7 @@ FactoryGirl.define do
 		sequence(:nickname) { |n| "User#{n}" }
 		password "foobar"
 		password_confirmation "foobar"
+		sequence(:email) { |n| "test.user.#{n}@risker.info" }
 	end
 
 	factory :project do
@@ -55,5 +56,17 @@ FactoryGirl.define do
 		comment "コメント"
 		id_type 0
 		sequence(:target_id) { |n| n }
+	end
+
+	factory :limit_api do
+		sequence(:api) { |n| "test_api#{n}" }
+		counter 0
+		counted_at Time.zone.now
+	end
+
+	factory :password_reset_hash do
+		sequence(:user_id) { |n| n }
+		hash_pass "hoobar"
+		enable_flag true
 	end
 end

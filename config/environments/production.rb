@@ -77,4 +77,18 @@ Risker::Application.configure do
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
+
+  # メール設定
+  # メール設定
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address:        'smtp.muumuu-mail.com',
+    port:           465,
+    domain:         'risker.info',
+    user_name:      'notify@risker.info',
+    password:       'gpSUg9CMt',
+    authentication: :login,
+    tls:            true
+  }
+
 end

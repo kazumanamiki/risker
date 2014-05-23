@@ -4,6 +4,6 @@
 %>
 <%
 label_state = "default"
-label_state = "danger" if (risk.watch_over_date < DateTime.now)
+label_state = "danger" if (risk.watch_over_date < Time.zone.now)
 %>
 <span class="label label-<%= label_state %>">監視終了日：<%= risk.watch_over_date %></span>

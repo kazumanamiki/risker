@@ -1,0 +1,20 @@
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h2>パスワードを忘れましたか？</h2>
+		<p>
+			登録したメールアドレスにリセット用のアドレスをお送ります。<br>
+		</p>
+	</div>
+	<div class="panel-body">
+		<%= form_tag(password_reset_request_path) do %>
+			<fieldset>
+				<div class="form-group">
+					<%= label_tag :email, "メールアドレス", class: "control-label" %>
+					<%= text_field_tag :email, "", class: "form-control", placeholder: "メールアドレス" %>
+				</div>
+
+				<%= submit_tag "パスワードをリセットする", class: "btn btn-primary pull-right" %>
+			</fieldset>
+		<% end %>
+	</div>
+</div>

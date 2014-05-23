@@ -8,7 +8,7 @@ class UsersController < ApplicationController
 	end
 
 	def create
-		@user = User.new(risk_params)
+		@user = User.new(user_params)
 		if @user.save
 			sign_in @user
 			flash[:success] = sprintf("ユーザー登録が完了しました。")
@@ -33,10 +33,10 @@ class UsersController < ApplicationController
 	end
 
 	private
-		# ストロングパラメータ
+		# ストロングパラメータ(ユーザー作成)
 		# @return [Hash] Userモデルを生成する為のパラメータハッシュ値
-		def risk_params
-			params.require(:user).permit(:nickname, :password, :password_confirmation)
+		def user_params
+			params.require(:user).permit(:nickname, :email, :password, :password_confirmation)
 		end
 
 		def correct_user

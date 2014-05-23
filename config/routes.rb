@@ -10,10 +10,14 @@ Risker::Application.routes.draw do
 
   resources :cost_comments, only: [:create, :destroy]
   root 'static_pages#root'
+  match '/history', to: 'static_pages#history', via: 'get'
   match '/signup', to: 'users#new', via: 'get'
   match '/signin', to: 'sessions#new', via: 'get'
   match '/signout', to: 'sessions#destroy', via: 'delete'
-  match '/history', to: 'static_pages#history', via: 'get'
+  match '/password_reset_request/', to: 'password_reset_hashs#show', via: 'get'
+  match '/password_reset_request/', to: 'password_reset_hashs#create', via: 'post'
+  match '/password_reset/',         to: 'password_reset_hashs#edit', via: 'get'
+  match '/password_reset/',         to: 'password_reset_hashs#update', via: 'patch'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

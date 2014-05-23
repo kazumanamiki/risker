@@ -6,17 +6,19 @@
 		<%= form_tag(sessions_path) do %>
 			<fieldset>
 				<div class="form-group">
-					<%= label_tag :nickname, "ニックネーム", class: "control-label" %>
-					<%= text_field_tag :nickname, "", class: "form-control", placeholder: "ニックネーム" %>
+					<%= label_tag :email, "メールアドレス", class: "control-label" %>
+					<%= text_field_tag :email, "", class: "form-control", placeholder: "メールアドレス" %>
 				</div>
 
 				<div class="form-group">
 					<%= label_tag :password, "パスワード", class: "control-label" %>
 					<%= password_field_tag :password, "", class: "form-control", placeholder: "パスワード" %>
 				</div>
-
 				<%= submit_tag "ログイン", class: "btn btn-primary pull-right" %>
 			</fieldset>
 		<% end %>
+		<div class="pull-right">
+			<a href="<%= password_reset_request_path %>">パスワードを忘れた場合はこちら</a>
+		</div>
 	</div>
 </div>
