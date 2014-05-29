@@ -11,6 +11,8 @@
 // about supported directives.
 //
 //= require jquery
+//= require journal/loader
+//= require journal/bootswatch
 //= require jquery_ujs
 //= require turbolinks
 //= require jquery.ui.all
