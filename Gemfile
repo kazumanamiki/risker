@@ -21,6 +21,7 @@ end
 
 gem 'sass-rails', '>= 3.2'
 gem 'therubyracer'
+gem 'less-rails'
 #gem 'bootstrap-sass', '~> 3.1.1'
 # twitter bootstrap css & javascript toolkit
 gem 'twitter-bootswatch-rails', '~> 3.1.1'
