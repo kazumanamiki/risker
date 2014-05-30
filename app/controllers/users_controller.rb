@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
 
 	before_action :signed_in_user, only: [:show, :edit, :update, :destroy]
-	before_action :correct_user, only: [:edit, :update]
+	before_action :correct_user, only: [:show, :edit, :update]
 
 	def new
 		@user = User.new
@@ -40,7 +40,16 @@ class UsersController < ApplicationController
 		end
 
 		def correct_user
-			@user = User.find(params[:id])
-			redirect_to(root_path) unless correct_user?(@user)
+			@user = User.where(id: params[:id]).first
+			if @user.nil?
+				# ユーザーが存在しない場合
+				flash[:warning] = "存在しないアドレスです"
+				return redirect_to root_path
+			end
+			# 対象のリスクがユーザーのものかチェック（権限チェック）
+			if !current_user?(@user)
+				flash[:danger] = "操作に対する権限がありません"
+				return redirect_to root_path
+			end
 		end
 end

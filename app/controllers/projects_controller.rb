@@ -1,7 +1,7 @@
 class ProjectsController < ApplicationController
 
 	before_action :signed_in_user
-	before_action :correct_user, only: [:destroy]
+	before_action :correct_user, only: [:show, :destroy]
 
 	def new
 		@project = Project.new
@@ -34,10 +34,16 @@ class ProjectsController < ApplicationController
 	private
 		# アクションを行うユーザーが正しいかチェック
 		def correct_user
-			@project = Project.find(params[:id])
-			unless current_user?(@project.user)
+			@project = Project.where(id: params[:id]).first
+
+			if @project.nil?
+				flash[:warning] = "存在しないアドレスです"
+				return redirect_to root_path
+			end
+			# 対象のリスクがユーザーのものかチェック（権限チェック）
+			if !current_user?(@project.user)
 				flash[:danger] = "操作に対する権限がありません"
-				redirect_to root_path
+				return redirect_to root_path
 			end
 		end
 

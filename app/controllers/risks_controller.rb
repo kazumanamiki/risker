@@ -2,7 +2,7 @@ class RisksController < ApplicationController
 	include CostCommentHelper
 
 	before_action :signed_in_user
-	before_action :correct_user, only: [:create, :update, :checking, :destroy]
+	before_action :correct_user, only: [:create, :show, :update, :checking, :destroy]
 
 	def new
 		@project = Project.find(params[:project])
@@ -53,14 +53,22 @@ class RisksController < ApplicationController
 	private
 		# アクションを行うユーザーが正しいかチェック
 		def correct_user
+			# アクションでリスクモデルの取得方法を変える
 			if params[:action] == 'create'
 				@risk = Risk.new(create_risk_params)
 			else
-				@risk = Risk.find(params[:id])
+				@risk = Risk.where(id: params[:id]).first
 			end
-			unless current_user?(@risk.project.user)
-				flash.now[:danger] = "操作に対する権限がありません"
-				redirect_to(root_path)
+
+			# リスクが存在するかチェック
+			if @risk.nil?
+				flash[:warning] = "存在しないアドレスです"
+				return redirect_to root_path
+			end
+			# 対象のリスクがユーザーのものかチェック（権限チェック）
+			if !current_user?(@risk.project.user)
+				flash[:danger] = "操作に対する権限がありません"
+				return redirect_to root_path
 			end
 		end
 

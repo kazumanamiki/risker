@@ -1,7 +1,7 @@
 class CostCommentsController < ApplicationController
 
 	before_action :signed_in_user
-	before_action :correct_user, only: [:create, :destroy]
+	before_action :correct_user
 
 	def create
 		@saved_flag = @cost_comment.save # js用に変数に格納
@@ -30,11 +30,17 @@ class CostCommentsController < ApplicationController
 			if params[:action] == 'create'
 				@cost_comment = CostComment.new(cost_comment_params)
 			else
-				@cost_comment = CostComment.find(params[:id])
+				@cost_comment = CostComment.where(id: params[:id]).first
 			end
-			unless current_user?(@cost_comment.risk.project.user)
+
+			if @cost_comment.nil?
+				flash[:warning] = "存在しないアドレスです"
+				return redirect_to root_path
+			end
+
+			if !current_user?(@cost_comment.risk.project.user)
 				flash[:danger] = "操作に対する権限がありません"
-				redirect_to(root_path)
+				return redirect_to root_path
 			end
 		end
 
