@@ -11,6 +11,7 @@ Risker::Application.routes.draw do
   resources :cost_comments, only: [:create, :destroy]
   root 'static_pages#root'
   match '/history', to: 'static_pages#history', via: 'get'
+  match '/counter', to: 'static_pages#counter', via: 'get'
   match '/signup', to: 'users#new', via: 'get'
   match '/signin', to: 'sessions#new', via: 'get'
   match '/signout', to: 'sessions#destroy', via: 'delete'
